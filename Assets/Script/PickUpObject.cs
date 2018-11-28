@@ -17,35 +17,88 @@ public class PickUpObject : MonoBehaviour {
     private Vector3 lastPos;
 
     //Den måde objektet bliver roteret på
-    public int carryMode = 2;
+    public int carryMode = 0;
 
     //Variabler der holder styr på spillerens rotationsinput
     private Quaternion q;
 
     private float userRotationX = 0;
-    private float userRotationY = 0;
-    private float userRotationZ = 0;
+    private float userRotationY = 270;
+    private float userRotationZ = 90;
 
     private Quaternion userRotationQ = Quaternion.Euler(0,0,0);
-    private int userRotationAxis = 2;
+    private int userRotationAxis = 0;
+    public Material capMaterial;
 
-    
+    Vector3 marker;
 
+    ObjectPooler objectPooler;
 	void Start () {
         mainCamera = GameObject.FindWithTag("MainCamera");
+        objectPooler = ObjectPooler.Instance;
 	}
 	
 	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit))
+            {
+                if (hit.transform.tag == "wood")
+                {
+                   
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1) && carrying == false)
+        {
+            GameObject p = objectPooler.SpawnFromPool("pillar", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
+            carrying = true;
+            carriedObject = p.gameObject;
+            p.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+            p.gameObject.layer = 10;
+            Vector3 dist = p.transform.position - mainCamera.transform.position;
+            distance = dist.magnitude;
+            q = p.transform.rotation;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2) && !carrying)
+        {
+            GameObject p = objectPooler.SpawnFromPool("medium", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
+            carrying = true;
+            carriedObject = p.gameObject;
+            p.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+            p.gameObject.layer = 10;
+            Vector3 dist = p.transform.position - mainCamera.transform.position;
+            distance = dist.magnitude;
+            q = p.transform.rotation;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3) && !carrying)
+        {
+            GameObject p = objectPooler.SpawnFromPool("plank", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
+            carrying = true;
+            carriedObject = p.gameObject;
+            p.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+            p.gameObject.layer = 10;
+            Vector3 dist = p.transform.position - mainCamera.transform.position;
+            distance = dist.magnitude;
+            q = p.transform.rotation;
+        }
+        /*else if (Input.GetKeyDown(KeyCode.L))
         {
             carryMode += 1;
             if (carryMode >= 4)
             {
                 carryMode = 0;
             }
-        }
-        
+        }*/
+
+
         if (carrying)
         {
             Carry(carriedObject);
@@ -58,44 +111,52 @@ public class PickUpObject : MonoBehaviour {
 	}
 
     void Carry(GameObject o) {
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            carriedObject.transform.localScale -= new Vector3(0.05f, 0f, 0f);
+        }
+
         carriedObjectrb = o.GetComponent<Rigidbody>();
+
 
         trackVelocity = (carriedObjectrb.position - lastPos) * 50;
         lastPos = carriedObjectrb.position;
 
-        //o.transform.position = Vector3.Lerp (o.transform.position, mainCamera.transform.position + mainCamera.transform.forward * distance, Time.deltaTime * smooth);
-        
+        //o.transform.position = Vector3.Lerp (o.transform.position, mainCamera.transform.position + mainCamera.transform.forward * distance, Time.deltaTime * smooth); /*ANDEN MÅDE AT FLYTTE OBJEKTET*/
 
-        Vector3 marker = mainCamera.transform.position + mainCamera.transform.forward * distance;
+
+        marker = mainCamera.transform.position + mainCamera.transform.forward * distance;
         Vector3 toMarker = o.transform.position - (marker);
-        //carriedObjectrb.AddForce(-toMarker.normalized * multiplier );
 
-        force = o.transform.position - toMarker * Time.deltaTime * multiplier;
+        //carriedObjectrb.AddForce(-toMarker.normalized * multiplier ); /*ANDEN MÅDE AT FLYTTE OBJEKTET*/
+
+        force = o.transform.position - toMarker * Time.deltaTime * multiplier * 0.5f;
         carriedObjectrb.MovePosition(force);
-
-        if (carryMode == 0)
+        /*
+        switch (carryMode) 
         {
-            //carriedObjectrb.MoveRotation(transform.rotation * userRotationQ);
-            carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, transform.rotation * userRotationQ, 0.2f));
-        }
-        if (carryMode == 1)
-        {
-            //carriedObjectrb.MoveRotation(mainCamera.transform.rotation * userRotationQ);
-            carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, mainCamera.transform.rotation * userRotationQ, 0.2f));
+            case 1:
+                carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, transform.rotation * userRotationQ, 0.2f));
+                break;
+            case 2:
+                     carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, mainCamera.transform.rotation * userRotationQ, 0.2f)); 
+                break;
+            case 3:
+                carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, q * userRotationQ, 0.2f));
+                break;
+            case 4:
+                carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, Quaternion.identity * userRotationQ, 0.2f));
+                break;
 
+            default:
+                
+                break;
         }
-        else if (carryMode == 2)
-        {
-            //carriedObjectrb.MoveRotation(q * userRotationQ);
-            carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, q * userRotationQ, 0.2f));
+        */
 
-        }
-        else if (carryMode == 3){
-            //carriedObjectrb.MoveRotation(Quaternion.identity * userRotationQ);
-            carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, Quaternion.identity * userRotationQ, 0.2f));
-
-        }
-
+        carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, transform.rotation * userRotationQ , 0.1f));
+        
         if (Input.GetKeyDown(KeyCode.R))
         {
             
@@ -170,6 +231,35 @@ public class PickUpObject : MonoBehaviour {
             distance = 14.9f;
         }
 
+        if (Input.GetButtonDown("Fire1"))
+        {
+            WoodScript ws = carriedObject.transform.GetChild(0).GetComponent<WoodScript>();
+            Debug.Log(ws.sideCollider1Triggered);
+            Debug.Log(ws.sideCollider2Triggered);
+            if (ws.sideCollider2Triggered == true && ws.sideCollider1Triggered == true)
+            {
+                Debug.Log("Fired");
+                carriedObject.transform.GetComponent<Rigidbody>().isKinematic = true;
+                Destroy(carriedObject.GetComponent<Pickupable>());
+                carriedObject.transform.position += mainCamera.transform.forward * 0.01f;
+                DropObject();
+            }
+            else if (ws.endColliderTriggered == true)
+            {
+                float storedHeight = carriedObject.transform.position.y;
+                carriedObject.transform.position -= carriedObject.transform.right;
+                if (carriedObject.transform.position.y > storedHeight)
+                {
+                    carriedObject.transform.position += carriedObject.transform.right * 2;
+                }
+                carriedObject.transform.GetComponent<Rigidbody>().isKinematic = true;
+                Destroy(carriedObject.GetComponent<Pickupable>());
+                DropObject();
+            }
+            
+
+        }
+
         carriedObjectrb.velocity = Vector3.zero;
 
     }
@@ -216,9 +306,23 @@ public class PickUpObject : MonoBehaviour {
         carriedObject = null;
         carriedObjectrb = null;
         userRotationX = 0;
-        userRotationY = 0;
-        userRotationZ = 0;
+        userRotationY = 270;
+        userRotationZ = 90;
         userRotationQ = Quaternion.Euler(0, 0, 0);
-        userRotationAxis = 2;
+        userRotationAxis = 0;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+
+        Gizmos.color = Color.green;
+
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 5.0f);
+        Gizmos.DrawLine(transform.position + transform.up * 0.5f, transform.position + transform.up * 0.5f + transform.forward * 5.0f);
+        Gizmos.DrawLine(transform.position + -transform.up * 0.5f, transform.position + -transform.up * 0.5f + transform.forward * 5.0f);
+
+        Gizmos.DrawLine(transform.position, transform.position + transform.up * 0.5f);
+        Gizmos.DrawLine(transform.position, transform.position + -transform.up * 0.5f);
+
     }
 }
