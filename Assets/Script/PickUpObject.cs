@@ -5,7 +5,7 @@ using UnityEngine;
 public class PickUpObject : MonoBehaviour {
     GameObject mainCamera;
 
-    bool carrying;
+    bool carrying = false;
     GameObject carriedObject;
     private Rigidbody carriedObjectrb;
 
@@ -16,9 +16,6 @@ public class PickUpObject : MonoBehaviour {
     private Vector3 trackVelocity;
     private Vector3 lastPos;
 
-    //Den måde objektet bliver roteret på
-    public int carryMode = 0;
-
     //Variabler der holder styr på spillerens rotationsinput
     private Quaternion q;
 
@@ -27,20 +24,27 @@ public class PickUpObject : MonoBehaviour {
     private float userRotationZ = 90;
 
     private Quaternion userRotationQ = Quaternion.Euler(0,0,0);
+    private Quaternion torusRotation = Quaternion.Euler(90f, 0f, 0f);
+
     private int userRotationAxis = 0;
     public Material capMaterial;
+
+    public GameObject torus;
 
     Vector3 marker;
 
     ObjectPooler objectPooler;
+
 	void Start () {
         mainCamera = GameObject.FindWithTag("MainCamera");
         objectPooler = ObjectPooler.Instance;
-	}
+        carrying = false;
+        torusRotation = Quaternion.Euler(90f, 0f, 0f);
+}
 	
 	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.Delete))
         {
             RaycastHit hit;
 
@@ -48,55 +52,85 @@ public class PickUpObject : MonoBehaviour {
             {
                 if (hit.transform.tag == "wood")
                 {
-                   
+                    hit.transform.position += Vector3.down * 1000f;
                 }
             }
         }
+        /*
+        if (Input.GetKeyDown(KeyCode.F) && !carrying)
+        {
+            RaycastHit hit;
 
-        if (Input.GetKeyDown(KeyCode.Alpha1) && carrying == false)
-        {
-            GameObject p = objectPooler.SpawnFromPool("pillar", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
-            carrying = true;
-            carriedObject = p.gameObject;
-            p.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
-            p.gameObject.layer = 10;
-            Vector3 dist = p.transform.position - mainCamera.transform.position;
-            distance = dist.magnitude;
-            q = p.transform.rotation;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2) && !carrying)
-        {
-            GameObject p = objectPooler.SpawnFromPool("medium", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
-            carrying = true;
-            carriedObject = p.gameObject;
-            p.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
-            p.gameObject.layer = 10;
-            Vector3 dist = p.transform.position - mainCamera.transform.position;
-            distance = dist.magnitude;
-            q = p.transform.rotation;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3) && !carrying)
-        {
-            GameObject p = objectPooler.SpawnFromPool("plank", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
-            carrying = true;
-            carriedObject = p.gameObject;
-            p.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
-            p.gameObject.layer = 10;
-            Vector3 dist = p.transform.position - mainCamera.transform.position;
-            distance = dist.magnitude;
-            q = p.transform.rotation;
-        }
-        /*else if (Input.GetKeyDown(KeyCode.L))
-        {
-            carryMode += 1;
-            if (carryMode >= 4)
+            if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit))
             {
-                carryMode = 0;
+                if (hit.transform.tag == "wood")
+                {
+                    Vector3 relativeDistance = hit.point - hit.transform.position;
+                    float dist = hit.transform.InverseTransformDirection(relativeDistance).x * 0.25f;
+                    Debug.Log(relativeDistance.magnitude);
+                    float halfLength = hit.transform.localScale.x * 0.5f;
+                    hit.transform.position = hit.transform.position + hit.transform.right * (halfLength - dist);
+                    hit.transform.localScale = new Vector3(halfLength + (dist), hit.transform.localScale.y, hit.transform.localScale.z);
+                   
+                    if (hit.transform.localScale.x < 0)
+                    {
+                        hit.transform.position -= new Vector3(1000, 0, 0);
+                    }
+                }
             }
-        }*/
+        }
+        */
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            if (!carrying)
+            {
+                torusRotation = Quaternion.Euler(90f, 0f, 0f);
+                GameObject p = objectPooler.SpawnFromPool("pillar", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
+                carrying = true;
+                carriedObject = p.gameObject;
+                p.gameObject.GetComponent<Rigidbody>().useGravity = false;
+                p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+                p.gameObject.layer = 10;
+                Vector3 dist = p.transform.position - mainCamera.transform.position;
+                distance = dist.magnitude;
+                q = p.transform.rotation;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (!carrying)
+            
+            {
+                torusRotation = Quaternion.Euler(90f, 0f, 0f);
+                GameObject p = objectPooler.SpawnFromPool("medium", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
+                carrying = true;
+                carriedObject = p.gameObject;
+                p.gameObject.GetComponent<Rigidbody>().useGravity = false;
+                p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+                p.gameObject.layer = 10;
+                Vector3 dist = p.transform.position - mainCamera.transform.position;
+                distance = dist.magnitude;
+                q = p.transform.rotation;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            if (!carrying)
+            {
+                torusRotation = Quaternion.Euler(90f, 0f, 0f);
+                GameObject p = objectPooler.SpawnFromPool("plank", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
+                carrying = true;
+                carriedObject = p.gameObject;
+                p.gameObject.GetComponent<Rigidbody>().useGravity = false;
+                p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+                p.gameObject.layer = 10;
+                Vector3 dist = p.transform.position - mainCamera.transform.position;
+                distance = dist.magnitude;
+                q = p.transform.rotation;
+            }
+
+           
+        }
 
 
         if (carrying)
@@ -112,10 +146,76 @@ public class PickUpObject : MonoBehaviour {
 
     void Carry(GameObject o) {
 
+        torus.SetActive(true);
+
+
+        torus.transform.rotation = transform.rotation;
+        
+        torus.transform.position = carriedObject.transform.position;
+        torus.transform.GetChild(0).transform.localRotation = torusRotation;
+        
+
+        
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            carriedObject.transform.localScale -= new Vector3(0.05f, 0f, 0f);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                carriedObject.transform.localScale -= new Vector3(0.01f, 0f, 0f);
+            }
+            else { carriedObject.transform.localScale -= new Vector3(0.05f + Random.Range(-0.01f, 0.01f), 0f, 0f); }
         }
+
+
+        if (Input.GetKeyDown(KeyCode.Alpha1) && carriedObject.transform.localScale.x > 0.1f && Input.GetKey(KeyCode.LeftShift))
+        {
+
+            carriedObject.transform.localScale = new Vector3(0.1f, 1f, 1f);
+
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2) && Input.GetKey(KeyCode.LeftShift))
+        {
+
+            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.2f, 1f, 1f);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3) && Input.GetKey(KeyCode.LeftShift))
+        {
+
+            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.3f, 1f, 1f);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4) &&  Input.GetKey(KeyCode.LeftShift))
+        {
+
+            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.4f, 1f, 1f);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5) && Input.GetKey(KeyCode.LeftShift))
+        {
+
+            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.5f, 1f, 1f);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6) &&  Input.GetKey(KeyCode.LeftShift))
+        {
+
+            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.6f, 1f, 1f);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7) && Input.GetKey(KeyCode.LeftShift))
+        {
+
+            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.7f, 1f, 1f);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8) &&  Input.GetKey(KeyCode.LeftShift))
+        {
+
+            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.8f, 1f, 1f);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9) &&  Input.GetKey(KeyCode.LeftShift))
+        {
+
+            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.9f, 1f, 1f);
+        }
+
 
         carriedObjectrb = o.GetComponent<Rigidbody>();
 
@@ -123,45 +223,22 @@ public class PickUpObject : MonoBehaviour {
         trackVelocity = (carriedObjectrb.position - lastPos) * 50;
         lastPos = carriedObjectrb.position;
 
-        //o.transform.position = Vector3.Lerp (o.transform.position, mainCamera.transform.position + mainCamera.transform.forward * distance, Time.deltaTime * smooth); /*ANDEN MÅDE AT FLYTTE OBJEKTET*/
-
-
         marker = mainCamera.transform.position + mainCamera.transform.forward * distance;
         Vector3 toMarker = o.transform.position - (marker);
 
-        //carriedObjectrb.AddForce(-toMarker.normalized * multiplier ); /*ANDEN MÅDE AT FLYTTE OBJEKTET*/
-
         force = o.transform.position - toMarker * Time.deltaTime * multiplier * 0.5f;
         carriedObjectrb.MovePosition(force);
-        /*
-        switch (carryMode) 
-        {
-            case 1:
-                carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, transform.rotation * userRotationQ, 0.2f));
-                break;
-            case 2:
-                     carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, mainCamera.transform.rotation * userRotationQ, 0.2f)); 
-                break;
-            case 3:
-                carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, q * userRotationQ, 0.2f));
-                break;
-            case 4:
-                carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, Quaternion.identity * userRotationQ, 0.2f));
-                break;
 
-            default:
-                
-                break;
-        }
-        */
-
-        carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, transform.rotation * userRotationQ , 0.1f));
+        carriedObjectrb.MoveRotation(Quaternion.Slerp(carriedObject.transform.rotation, transform.rotation * userRotationQ , 0.15f));
         
+
+        // Rotation of carried object
         if (Input.GetKeyDown(KeyCode.R))
         {
             
             if (userRotationAxis == 0)
             {
+                
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
                     userRotationX += 5;
@@ -178,6 +255,7 @@ public class PickUpObject : MonoBehaviour {
             }
             else if (userRotationAxis == 1)
             {
+                
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
                     userRotationY += 5;
@@ -194,6 +272,7 @@ public class PickUpObject : MonoBehaviour {
             }
             else if (userRotationAxis == 2)
             {
+                
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
                     userRotationZ += 5;
@@ -208,10 +287,13 @@ public class PickUpObject : MonoBehaviour {
                 }
                 
             }
+
             
 
         }
         userRotationQ = Quaternion.Euler(userRotationX, userRotationY, userRotationZ);
+
+
 
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -219,9 +301,23 @@ public class PickUpObject : MonoBehaviour {
             if (userRotationAxis >= 3)
             {
                 userRotationAxis = 0;
+
             }
+             if (userRotationAxis == 0)
+             {
+                 torusRotation = Quaternion.Euler(90f, 0f, 0f);
+             }
+             else if (userRotationAxis == 1)
+             {
+                 torusRotation = Quaternion.Euler(0f, 0f, 0f);
+             }
+             else if (userRotationAxis == 2)
+             {
+                 torusRotation = Quaternion.Euler(0f, 0f, 90f);
+             }
         }
         distance += Input.GetAxis("Mouse ScrollWheel");
+
         if (distance<= 0.5f)
         {
             distance = 0.6f;
@@ -234,33 +330,40 @@ public class PickUpObject : MonoBehaviour {
         if (Input.GetButtonDown("Fire1"))
         {
             WoodScript ws = carriedObject.transform.GetChild(0).GetComponent<WoodScript>();
-            Debug.Log(ws.sideCollider1Triggered);
-            Debug.Log(ws.sideCollider2Triggered);
+
             if (ws.sideCollider2Triggered == true && ws.sideCollider1Triggered == true)
             {
-                Debug.Log("Fired");
+
                 carriedObject.transform.GetComponent<Rigidbody>().isKinematic = true;
                 Destroy(carriedObject.GetComponent<Pickupable>());
-                carriedObject.transform.position += mainCamera.transform.forward * 0.01f;
+                carriedObject.transform.position += -toMarker.normalized * ws.width/ws.multiplier * 0.4f;
                 DropObject();
-            }
-            else if (ws.endColliderTriggered == true)
+            }   
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+
+        {
+            WoodScript ws = carriedObject.transform.GetChild(0).GetComponent<WoodScript>();
+            if (ws.endColliderTriggered == true)
             {
                 float storedHeight = carriedObject.transform.position.y;
-                carriedObject.transform.position -= carriedObject.transform.right;
+                carriedObject.transform.position -= carriedObject.transform.right/2;
                 if (carriedObject.transform.position.y > storedHeight)
                 {
-                    carriedObject.transform.position += carriedObject.transform.right * 2;
+                    carriedObject.transform.position += carriedObject.transform.right ;
                 }
                 carriedObject.transform.GetComponent<Rigidbody>().isKinematic = true;
                 Destroy(carriedObject.GetComponent<Pickupable>());
                 DropObject();
             }
-            
-
         }
 
-        carriedObjectrb.velocity = Vector3.zero;
+        if (carriedObjectrb != null)
+        {
+            carriedObjectrb.velocity = Vector3.zero;
+        }
+        
 
     }
 
@@ -284,6 +387,8 @@ public class PickUpObject : MonoBehaviour {
                     Vector3 dist = p.transform.position - mainCamera.transform.position;
                     distance = dist.magnitude;
                     q = p.transform.rotation;
+                    torusRotation = Quaternion.EulerAngles(90f, 0f, 0f);
+                    
                 }
             }
         }
@@ -310,19 +415,8 @@ public class PickUpObject : MonoBehaviour {
         userRotationZ = 90;
         userRotationQ = Quaternion.Euler(0, 0, 0);
         userRotationAxis = 0;
+        torus.SetActive(false);
     }
 
-    void OnDrawGizmosSelected()
-    {
 
-        Gizmos.color = Color.green;
-
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 5.0f);
-        Gizmos.DrawLine(transform.position + transform.up * 0.5f, transform.position + transform.up * 0.5f + transform.forward * 5.0f);
-        Gizmos.DrawLine(transform.position + -transform.up * 0.5f, transform.position + -transform.up * 0.5f + transform.forward * 5.0f);
-
-        Gizmos.DrawLine(transform.position, transform.position + transform.up * 0.5f);
-        Gizmos.DrawLine(transform.position, transform.position + -transform.up * 0.5f);
-
-    }
 }

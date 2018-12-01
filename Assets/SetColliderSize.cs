@@ -10,7 +10,7 @@ public class SetColliderSize : MonoBehaviour {
 
         WoodScript woodScript = transform.GetChild(0).GetComponent<WoodScript>();
 
-        boxCol.size = new Vector3(woodScript.length/woodScript.multiplier * 1.5f, woodScript.width / woodScript.multiplier*1.5f, woodScript.height / woodScript.multiplier * 1.5f);
+        boxCol.size = new Vector3(woodScript.length/woodScript.multiplier, woodScript.width / woodScript.multiplier*1.5f, woodScript.height / woodScript.multiplier * 1.5f);
 	}
 	
 	// Update is called once per frame

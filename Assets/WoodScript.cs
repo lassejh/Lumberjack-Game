@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WoodScript : MonoBehaviour {
 
+   
+
     public float length;
     public int width;
     public int height;
@@ -29,7 +31,10 @@ public class WoodScript : MonoBehaviour {
 	public void UpdateWood () {
         this.transform.localScale = new Vector3(length / multiplier, width / multiplier, height / multiplier);
 
-        
+        this.transform.localPosition = new Vector3(0, 0, 0);
+
+        endCollider1.transform.rotation = transform.rotation;
+        endCollider2.transform.rotation = transform.rotation;
 
         endCollider1.transform.localScale = new Vector3(0.1f, width / multiplier, height / multiplier);
         endCollider2.transform.localScale = new Vector3(0.1f, width / multiplier, height / multiplier);
@@ -44,12 +49,17 @@ public class WoodScript : MonoBehaviour {
             0f,
             0f);
 
+        
 
+        sideCollider1.transform.rotation = transform.rotation;
         sideCollider1.transform.localScale = new Vector3(length / multiplier / 2, width / multiplier + 0.02f, height / multiplier + 0.02f);
-        sideCollider1.transform.localPosition = new Vector3(sideCollider1.transform.localPosition.x - transform.localScale.x * 0.25f, 0f, 0f);
+        sideCollider1.transform.localPosition = new Vector3(- transform.localScale.x * 0.25f, 0f, 0f);
+        
 
+
+        sideCollider2.transform.rotation = transform.rotation;
         sideCollider2.transform.localScale = new Vector3(length / multiplier / 2, width / multiplier + 0.02f, height / multiplier + 0.02f);
-        sideCollider2.transform.localPosition = new Vector3(sideCollider2.transform.localPosition.x + transform.localScale.x * 0.25f, 0f, 0f);
-
+        sideCollider2.transform.localPosition = new Vector3( transform.localScale.x * 0.25f, 0f, 0f);
+        
     }
 }
