@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EndTriggerScript : MonoBehaviour {
 
-    public GameObject woodObject;
+    
 
 	// Use this for initialization
 	void Start () {
@@ -20,14 +20,14 @@ public class EndTriggerScript : MonoBehaviour {
     {
         if (other.tag == "ground")
         {
-            woodObject.GetComponent<WoodScript>().endColliderTriggered = true;
+            transform.parent.GetChild(0).GetComponent<WoodScript>().endColliderTriggered = true;
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "ground")
         {
-            woodObject.GetComponent<WoodScript>().endColliderTriggered = false;
+            transform.parent.GetChild(0).GetComponent<WoodScript>().endColliderTriggered = false;
         }
     }
 }
