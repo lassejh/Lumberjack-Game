@@ -10,8 +10,8 @@ public class PickUpObject : MonoBehaviour {
     private Rigidbody carriedObjectrb;
 
     //variabler til suspension af objekt
-    public float distance = 2f;
-    public float multiplier = 40f;
+    public float distance = 5f;
+    public float multiplier = 80f;
     private Vector3 force;
     private Vector3 trackVelocity;
     private Vector3 lastPos;
@@ -31,9 +31,13 @@ public class PickUpObject : MonoBehaviour {
 
     public GameObject torus;
 
+    WoodScript ws;
+
     Vector3 marker;
 
     ObjectPooler objectPooler;
+
+    public Material torusMaterial;
 
 	void Start () {
         mainCamera = GameObject.FindWithTag("MainCamera");
@@ -56,30 +60,7 @@ public class PickUpObject : MonoBehaviour {
                 }
             }
         }
-        /*
-        if (Input.GetKeyDown(KeyCode.F) && !carrying)
-        {
-            RaycastHit hit;
 
-            if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit))
-            {
-                if (hit.transform.tag == "wood")
-                {
-                    Vector3 relativeDistance = hit.point - hit.transform.position;
-                    float dist = hit.transform.InverseTransformDirection(relativeDistance).x * 0.25f;
-                    Debug.Log(relativeDistance.magnitude);
-                    float halfLength = hit.transform.localScale.x * 0.5f;
-                    hit.transform.position = hit.transform.position + hit.transform.right * (halfLength - dist);
-                    hit.transform.localScale = new Vector3(halfLength + (dist), hit.transform.localScale.y, hit.transform.localScale.z);
-                   
-                    if (hit.transform.localScale.x < 0)
-                    {
-                        hit.transform.position -= new Vector3(1000, 0, 0);
-                    }
-                }
-            }
-        }
-        */
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             if (!carrying)
@@ -94,6 +75,7 @@ public class PickUpObject : MonoBehaviour {
                 Vector3 dist = p.transform.position - mainCamera.transform.position;
                 distance = dist.magnitude;
                 q = p.transform.rotation;
+
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -111,6 +93,7 @@ public class PickUpObject : MonoBehaviour {
                 Vector3 dist = p.transform.position - mainCamera.transform.position;
                 distance = dist.magnitude;
                 q = p.transform.rotation;
+
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -127,6 +110,7 @@ public class PickUpObject : MonoBehaviour {
                 Vector3 dist = p.transform.position - mainCamera.transform.position;
                 distance = dist.magnitude;
                 q = p.transform.rotation;
+
             }
 
            
@@ -146,6 +130,10 @@ public class PickUpObject : MonoBehaviour {
 
     void Carry(GameObject o) {
 
+        ws = carriedObject.transform.GetChild(0).GetComponent<WoodScript>();
+        if (ws.sideCollider2Triggered && ws.sideCollider1Triggered) { torusMaterial.color = Color.green; }
+        else { torusMaterial.color = Color.blue; }
+
         torus.SetActive(true);
 
 
@@ -153,17 +141,39 @@ public class PickUpObject : MonoBehaviour {
         
         torus.transform.position = carriedObject.transform.position;
         torus.transform.GetChild(0).transform.localRotation = torusRotation;
-        
 
-        
+        if (ws.endColliderTriggered == true)
+        {
+            if (ws.arrowObject.transform.position.y > ws.arrowObject2.transform.position.y)
+            {
+                ws.arrowObject2.SetActive(true);
+            }
+            else
+            {
+                ws.arrowObject.SetActive(true);
+            }
+        }
+        else {
+            ws.arrowObject.SetActive(false);
+            ws.arrowObject2.SetActive(false);
+        }
+
+
+
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 carriedObject.transform.localScale -= new Vector3(0.01f, 0f, 0f);
+                carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x-0.01f, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
             }
-            else { carriedObject.transform.localScale -= new Vector3(0.05f + Random.Range(-0.01f, 0.01f), 0f, 0f); }
+            else
+            {
+                float rnd = Random.Range(-0.01f, 0.01f);
+                carriedObject.transform.localScale -= new Vector3(0.05f + rnd, 0f, 0f);
+                carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x - 0.05f + rnd, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
+            }
         }
 
 
@@ -316,20 +326,30 @@ public class PickUpObject : MonoBehaviour {
                  torusRotation = Quaternion.Euler(0f, 0f, 90f);
              }
         }
+        if (ws.sideCollider2Triggered ||ws.sideCollider1Triggered)
+        {
+            Vector3 actualDistance = carriedObject.transform.position - mainCamera.transform.position;
+            if (distance > actualDistance.magnitude + 0.3f)
+            { distance = actualDistance.magnitude + 0.2f; }
+            if (distance < actualDistance.magnitude - 0.3f)
+            { distance = actualDistance.magnitude - 0.02f; }
+        }
+        
         distance += Input.GetAxis("Mouse ScrollWheel");
 
         if (distance<= 0.5f)
         {
             distance = 0.6f;
         }
-        if (distance >= 15f)
+        if (distance >= 10f)
         {
-            distance = 14.9f;
+            distance = 9.9f;
         }
+        
 
         if (Input.GetButtonDown("Fire1"))
         {
-            WoodScript ws = carriedObject.transform.GetChild(0).GetComponent<WoodScript>();
+            
 
             if (ws.sideCollider2Triggered == true && ws.sideCollider1Triggered == true)
             {
@@ -338,13 +358,17 @@ public class PickUpObject : MonoBehaviour {
                 Destroy(carriedObject.GetComponent<Pickupable>());
                 carriedObject.transform.position += -toMarker.normalized * ws.width/ws.multiplier * 0.4f;
                 DropObject();
+                Vector3 actualDistance = carriedObject.transform.position - mainCamera.transform.position;
+                distance = actualDistance.magnitude-0.4F;
+               
+
             }   
         }
 
         if (Input.GetButtonDown("Fire2"))
 
         {
-            WoodScript ws = carriedObject.transform.GetChild(0).GetComponent<WoodScript>();
+            
             if (ws.endColliderTriggered == true)
             {
                 float storedHeight = carriedObject.transform.position.y;
@@ -388,7 +412,8 @@ public class PickUpObject : MonoBehaviour {
                     distance = dist.magnitude;
                     q = p.transform.rotation;
                     torusRotation = Quaternion.EulerAngles(90f, 0f, 0f);
-                    
+
+
                 }
             }
         }
@@ -416,6 +441,11 @@ public class PickUpObject : MonoBehaviour {
         userRotationQ = Quaternion.Euler(0, 0, 0);
         userRotationAxis = 0;
         torus.SetActive(false);
+        
+        ws.arrowObject.SetActive(false);
+        ws.arrowObject2.SetActive(false);
+        ws = null;
+
     }
 
 

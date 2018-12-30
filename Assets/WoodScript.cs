@@ -22,6 +22,11 @@ public class WoodScript : MonoBehaviour {
     public bool sideCollider1Triggered = false;
     public bool sideCollider2Triggered = false;
 
+    public GameObject arrowObject;
+    public GameObject arrowObject2;
+
+    public Material woodMat;
+
     void Awake () {
         UpdateWood();
         
@@ -29,15 +34,18 @@ public class WoodScript : MonoBehaviour {
     }
 
 	public void UpdateWood () {
+
         this.transform.localScale = new Vector3(length / multiplier, width / multiplier, height / multiplier);
 
         this.transform.localPosition = new Vector3(0, 0, 0);
 
         endCollider1.transform.rotation = transform.rotation;
         endCollider2.transform.rotation = transform.rotation;
-
-        endCollider1.transform.localScale = new Vector3(0.1f, width / multiplier, height / multiplier);
-        endCollider2.transform.localScale = new Vector3(0.1f, width / multiplier, height / multiplier);
+        this.transform.GetComponent<Renderer>().material = woodMat;
+        this.transform.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(Random.Range(-1f,1f),Random.Range(-1f,1f));
+        this.transform.GetComponent<Renderer>().material.mainTextureScale = new Vector2(1,0.1f);
+        endCollider1.transform.localScale = new Vector3(0.05f, width / multiplier, height / multiplier);
+        endCollider2.transform.localScale = new Vector3(0.05f, width / multiplier, height / multiplier);
 
         endCollider1.transform.localPosition = new Vector3(
             transform.localPosition.x - transform.localScale.x * 0.5f - 0.05f,
@@ -49,7 +57,8 @@ public class WoodScript : MonoBehaviour {
             0f,
             0f);
 
-        
+        arrowObject2.transform.localPosition = endCollider1.transform.localPosition;
+        arrowObject.transform.localPosition = endCollider2.transform.localPosition;
 
         sideCollider1.transform.rotation = transform.rotation;
         sideCollider1.transform.localScale = new Vector3(length / multiplier / 2, width / multiplier + 0.02f, height / multiplier + 0.02f);
