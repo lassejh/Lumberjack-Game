@@ -166,13 +166,13 @@ public class PickUpObject : MonoBehaviour {
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 carriedObject.transform.localScale -= new Vector3(0.01f, 0f, 0f);
-                carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x-0.01f, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
+                carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x-0.04f, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
             }
             else
             {
                 float rnd = Random.Range(-0.01f, 0.01f);
                 carriedObject.transform.localScale -= new Vector3(0.05f + rnd, 0f, 0f);
-                carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x - 0.05f + rnd, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
+                carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x - 0.2f + rnd, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
             }
         }
 
