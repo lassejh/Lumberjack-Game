@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GunDisplay : MonoBehaviour {
+public class GunDisplay : MonoBehaviour
+{
+    public GameObject firstpersoncontroller;
 
     public GameObject panel1; // Intro message
-    public GameObject panel2; // Hotkeys
-    public GameObject panel3; // Chopping
-    public GameObject panel4; // Building
-    public GameObject panel5; // Inventory?
+    public GameObject panel2; // Carrying false
+    public GameObject panel3; // Carrying true
+    public GameObject panel4; // Chopping
+    public GameObject panel5; // Painting
 
     public GameObject introMessage;
 
@@ -23,7 +25,30 @@ public class GunDisplay : MonoBehaviour {
     }
 	
 	void Update () {
-        if(DisplayPhase == 1)
+
+        if (isDisplayIntroMessage)
+        {
+            if (Input.GetButtonUp("Fire1"))
+            {
+                DisplayPhase = 2;
+                isDisplayIntroMessage = false;
+            }
+        }
+        if (isDisplayIntroMessage == false){ 
+            if (firstpersoncontroller.GetComponent<PickUpObject>().carrying == false)
+            {
+                Debug.Log("carrying == false");
+                DisplayPhase = 2;
+            }
+            if (firstpersoncontroller.GetComponent<PickUpObject>().carrying == true)
+            {
+                Debug.Log("carrying == true");
+                DisplayPhase = 3;
+            }
+        }
+
+
+        if (DisplayPhase == 1)
         {
             panel1.SetActive(true);
             panel2.SetActive(false);
@@ -67,15 +92,8 @@ public class GunDisplay : MonoBehaviour {
             panel5.SetActive(true);
         }
 
-        if (isDisplayIntroMessage)
-        {
-            if(Input.GetButtonUp("Fire1"))
-            {
-                DisplayPhase = 2;
-                //introMessage.GetComponent<Text>().enabled = true;
-            }
-        }
 
+        /*
         if (DisplayPhase == 2)
         {
             if (Input.GetButtonUp("Fire1"))
@@ -107,5 +125,6 @@ public class GunDisplay : MonoBehaviour {
 
             }
         }
+        */
     }
 }
