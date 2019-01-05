@@ -119,6 +119,11 @@ public class PickUpObject : MonoBehaviour {
             }       
         }
 
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            gun.SetActive(!gun.active);
+        }
+
 
         if (carrying)
         {
