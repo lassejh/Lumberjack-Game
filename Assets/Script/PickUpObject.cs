@@ -16,6 +16,8 @@ public class PickUpObject : MonoBehaviour {
     private Vector3 trackVelocity;
     private Vector3 lastPos;
 
+    public GameObject gun;
+
     //Variabler der holder styr på spillerens rotationsinput
     private Quaternion q;
 
@@ -38,6 +40,8 @@ public class PickUpObject : MonoBehaviour {
     ObjectPooler objectPooler;
 
     public Material torusMaterial;
+
+    bool triggeredWelcomeScreen = false;
 
 	void Start () {
         mainCamera = GameObject.FindWithTag("MainCamera");
@@ -75,7 +79,7 @@ public class PickUpObject : MonoBehaviour {
                 Vector3 dist = p.transform.position - mainCamera.transform.position;
                 distance = dist.magnitude;
                 q = p.transform.rotation;
-
+                gun.GetComponent<GunDisplay>().UpdateDisplay();
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -92,7 +96,8 @@ public class PickUpObject : MonoBehaviour {
                 p.gameObject.layer = 10;
                 Vector3 dist = p.transform.position - mainCamera.transform.position;
                 distance = dist.magnitude;
-                q = p.transform.rotation;
+                q = p.transform.rotation;            
+                gun.GetComponent<GunDisplay>().UpdateDisplay();
 
             }
         }
@@ -110,10 +115,8 @@ public class PickUpObject : MonoBehaviour {
                 Vector3 dist = p.transform.position - mainCamera.transform.position;
                 distance = dist.magnitude;
                 q = p.transform.rotation;
-
-            }
-
-           
+                gun.GetComponent<GunDisplay>().UpdateDisplay();
+            }       
         }
 
 
@@ -126,7 +129,25 @@ public class PickUpObject : MonoBehaviour {
         {
             PickUp();
         }
-	}
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (triggeredWelcomeScreen == false)
+            {
+                triggeredWelcomeScreen = true;
+
+                gun.GetComponent<GunDisplay>().UpdateDisplay();
+            }
+        }
+        if (Input.GetButtonDown("Fire2"))
+        {
+            if (triggeredWelcomeScreen == false)
+            {
+                triggeredWelcomeScreen = true;
+
+                gun.GetComponent<GunDisplay>().UpdateDisplay();
+            }
+        }
+        }
 
     void Carry(GameObject o) {
 
@@ -369,6 +390,7 @@ public class PickUpObject : MonoBehaviour {
 
         {
             
+
             if (ws.endColliderTriggered == true)
             {
                 float storedHeight = carriedObject.transform.position.y;
@@ -413,6 +435,10 @@ public class PickUpObject : MonoBehaviour {
                     q = p.transform.rotation;
                     torusRotation = Quaternion.EulerAngles(90f, 0f, 0f);
 
+                    gun.GetComponent<GunDisplay>().isDisplayIntroMessage = false;
+
+                    gun.GetComponent<GunDisplay>().UpdateDisplay();
+
 
                 }
             }
@@ -445,6 +471,8 @@ public class PickUpObject : MonoBehaviour {
         ws.arrowObject.SetActive(false);
         ws.arrowObject2.SetActive(false);
         ws = null;
+
+        gun.GetComponent<GunDisplay>().UpdateDisplay();
 
     }
 

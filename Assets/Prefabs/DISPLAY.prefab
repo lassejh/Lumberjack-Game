@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.22352941, g: 0.3882353, b: 0.07058824, a: 1}
+  m_Color: {r: 0.9810126, g: 1, b: 0, a: 0.7058824}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.51687074, g: 0.7830189, b: 0.24007656, a: 1}
+  m_Color: {r: 0.51687074, g: 0.7830189, b: 0.24007656, a: 0.35686275}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -192,7 +192,6 @@ MonoBehaviour:
   panel3: {fileID: 1567903022544328}
   panel4: {fileID: 1567903022544328}
   panel5: {fileID: 1567903022544328}
-  introMessage: {fileID: 4581533210025579803}
   DisplayPhase: 1
   isDisplayIntroMessage: 0
 --- !u!1 &1576426750799960
@@ -253,7 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.22521621, g: 0.38679248, b: 0.07115523, a: 1}
+  m_Color: {r: 0.98039216, g: 1, b: 0, a: 0.7058824}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -431,7 +430,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.22352941, g: 0.3882353, b: 0.07058824, a: 1}
+  m_Color: {r: 0.98039216, g: 1, b: 0, a: 0.7058824}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
