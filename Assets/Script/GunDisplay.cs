@@ -13,7 +13,7 @@ public class GunDisplay : MonoBehaviour
     public GameObject panel4; // Chopping
     public GameObject panel5; // Painting
 
-    public GameObject introMessage;
+    //public GameObject introMessage;
 
     public int DisplayPhase = 1;
 
@@ -25,28 +25,6 @@ public class GunDisplay : MonoBehaviour
     }
 	
 	void Update () {
-
-        if (isDisplayIntroMessage)
-        {
-            if (Input.GetButtonUp("Fire1"))
-            {
-                DisplayPhase = 2;
-                isDisplayIntroMessage = false;
-            }
-        }
-        if (isDisplayIntroMessage == false){ 
-            if (firstpersoncontroller.GetComponent<PickUpObject>().carrying == false)
-            {
-                Debug.Log("carrying == false");
-                DisplayPhase = 2;
-            }
-            if (firstpersoncontroller.GetComponent<PickUpObject>().carrying == true)
-            {
-                Debug.Log("carrying == true");
-                DisplayPhase = 3;
-            }
-        }
-
 
         if (DisplayPhase == 1)
         {
@@ -90,6 +68,27 @@ public class GunDisplay : MonoBehaviour
             panel3.SetActive(false);
             panel4.SetActive(false);
             panel5.SetActive(true);
+        }
+
+
+        if (isDisplayIntroMessage && Input.GetButtonUp("Fire1"))
+        {
+            isDisplayIntroMessage = false;
+            //DisplayPhase = 2;
+        }
+
+        if (!isDisplayIntroMessage)
+        {
+            if (firstpersoncontroller.GetComponent<PickUpObject>().carrying == false)
+            {
+                Debug.Log("carrying == false");
+                DisplayPhase = 2;
+            }
+            if (firstpersoncontroller.GetComponent<PickUpObject>().carrying == true)
+            {
+                Debug.Log("carrying == true");
+                DisplayPhase = 3;
+            }
         }
 
 
