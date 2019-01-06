@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33085846928121156}
   - component: {fileID: 23895018774874254}
   - component: {fileID: 64612569483621256}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Top
   m_TagString: tree
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 33438751956129154}
   - component: {fileID: 23214837790599192}
   - component: {fileID: 64588548409663508}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Root
   m_TagString: tree
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 23463466757095696}
   - component: {fileID: 64714620364694550}
   - component: {fileID: 54119991463482868}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Trunk
   m_TagString: wooden
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4001748300473512}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Tree
   m_TagString: tree
   m_Icon: {fileID: 0}
@@ -337,7 +337,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4801471700732670}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: TreeTopPart
   m_TagString: tree
   m_Icon: {fileID: 0}
@@ -368,7 +368,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4499590433028434}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: TreeRoot
   m_TagString: tree
   m_Icon: {fileID: 0}
@@ -399,7 +399,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4736269975562728}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: TrunkSpawn
   m_TagString: tree
   m_Icon: {fileID: 0}
@@ -431,7 +431,7 @@ GameObject:
   - component: {fileID: 4768863892564984}
   - component: {fileID: 33138436992890210}
   - component: {fileID: 23031533237419698}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Tree_top_crown
   m_TagString: tree
   m_Icon: {fileID: 0}
