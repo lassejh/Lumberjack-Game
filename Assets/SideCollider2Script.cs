@@ -6,22 +6,13 @@ public class SideCollider2Script : MonoBehaviour {
 
     public GameObject wood;
 
-    // Use this for initialization
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "wooden")
         {
             wood.GetComponent<WoodScript>().sideCollider2Triggered = true;
+            wood.GetComponent<WoodScript>().touchedObj = other.gameObject;
         }
     }
     void OnTriggerStay(Collider other)
@@ -45,6 +36,7 @@ public class SideCollider2Script : MonoBehaviour {
         if (collision.gameObject.tag == "wooden")
         {
             wood.GetComponent<WoodScript>().sideCollider2Triggered = true;
+            wood.GetComponent<WoodScript>().touchedObj = collision.gameObject;
         }
     }
     private void OnCollisionStay(Collision collision)

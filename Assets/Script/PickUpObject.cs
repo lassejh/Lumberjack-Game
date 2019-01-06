@@ -43,11 +43,22 @@ public class PickUpObject : MonoBehaviour {
 
     bool triggeredWelcomeScreen = false;
 
+    AudioSource audiosource;
+
+    public AudioClip[] woodClips;
+
+    public AudioClip chopWoodClip;
+
+    public AudioClip whooshClip;
+
+
+
 	void Start () {
         mainCamera = GameObject.FindWithTag("MainCamera");
         objectPooler = ObjectPooler.Instance;
         carrying = false;
         torusRotation = Quaternion.Euler(90f, 0f, 0f);
+        audiosource = GetComponent<AudioSource>();
 }
 	
 	void Update () {
@@ -189,6 +200,8 @@ public class PickUpObject : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            audiosource.clip = chopWoodClip;
+            audiosource.Play(0);
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 carriedObject.transform.localScale -= new Vector3(0.01f, 0f, 0f);
@@ -207,6 +220,8 @@ public class PickUpObject : MonoBehaviour {
         {
 
             carriedObject.transform.localScale = new Vector3(0.1f, 1f, 1f);
+            audiosource.clip = chopWoodClip;
+            audiosource.Play(0);
 
 
         }
@@ -215,41 +230,57 @@ public class PickUpObject : MonoBehaviour {
         {
 
             carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.2f, 1f, 1f);
+            audiosource.clip = chopWoodClip;
+            audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3) && Input.GetKey(KeyCode.LeftShift))
         {
 
             carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.3f, 1f, 1f);
+            audiosource.clip = chopWoodClip;
+            audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4) &&  Input.GetKey(KeyCode.LeftShift))
         {
 
             carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.4f, 1f, 1f);
+            audiosource.clip = chopWoodClip;
+            audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha5) && Input.GetKey(KeyCode.LeftShift))
         {
 
             carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.5f, 1f, 1f);
+            audiosource.clip = chopWoodClip;
+            audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha6) &&  Input.GetKey(KeyCode.LeftShift))
         {
 
             carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.6f, 1f, 1f);
+            audiosource.clip = chopWoodClip;
+            audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha7) && Input.GetKey(KeyCode.LeftShift))
         {
 
             carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.7f, 1f, 1f);
+            audiosource.clip = chopWoodClip;
+            audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha8) &&  Input.GetKey(KeyCode.LeftShift))
         {
 
             carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.8f, 1f, 1f);
+            audiosource.clip = chopWoodClip;
+            audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha9) &&  Input.GetKey(KeyCode.LeftShift))
         {
 
             carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.9f, 1f, 1f);
+            audiosource.clip = chopWoodClip;
+            audiosource.Play(0);
         }
 
 
@@ -271,7 +302,8 @@ public class PickUpObject : MonoBehaviour {
         // Rotation of carried object
         if (Input.GetKeyDown(KeyCode.R))
         {
-            
+            audiosource.clip = whooshClip;
+            audiosource.Play(0);
             if (userRotationAxis == 0)
             {
                 
@@ -379,14 +411,17 @@ public class PickUpObject : MonoBehaviour {
 
             if (ws.sideCollider2Triggered == true && ws.sideCollider1Triggered == true)
             {
-
+                carriedObject.transform.parent = ws.touchedObj.transform.parent;
                 carriedObject.transform.GetComponent<Rigidbody>().isKinematic = true;
-                Destroy(carriedObject.GetComponent<Pickupable>());
+                //Destroy(carriedObject.GetComponent<Pickupable>());
                 carriedObject.transform.position += -toMarker.normalized * ws.width/ws.multiplier * 0.4f;
-                DropObject();
                 Vector3 actualDistance = carriedObject.transform.position - mainCamera.transform.position;
+                
+                
                 distance = actualDistance.magnitude-0.4F;
-               
+                audiosource.clip = woodClips[Random.Range(0, woodClips.Length - 1)];
+                audiosource.Play(0);
+                DropObject();
 
             }   
         }
@@ -405,7 +440,7 @@ public class PickUpObject : MonoBehaviour {
                     carriedObject.transform.position += carriedObject.transform.right ;
                 }
                 carriedObject.transform.GetComponent<Rigidbody>().isKinematic = true;
-                Destroy(carriedObject.GetComponent<Pickupable>());
+               // Destroy(carriedObject.GetComponent<Pickupable>());
                 DropObject();
             }
         }
@@ -432,6 +467,8 @@ public class PickUpObject : MonoBehaviour {
                 if (p != null) {
                     carrying = true;
                     carriedObject = p.gameObject;
+                    p.transform.parent = null;
+                    p.gameObject.GetComponent<Rigidbody>().isKinematic = false;
                     p.gameObject.GetComponent<Rigidbody>().useGravity = false;
                     p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
                     p.gameObject.layer = 10;

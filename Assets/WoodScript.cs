@@ -27,6 +27,8 @@ public class WoodScript : MonoBehaviour {
 
     public Material woodMat;
 
+    public GameObject touchedObj;
+
     void Awake () {
         UpdateWood();
         
