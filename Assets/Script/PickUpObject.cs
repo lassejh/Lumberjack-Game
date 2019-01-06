@@ -5,6 +5,8 @@ using UnityEngine;
 public class PickUpObject : MonoBehaviour {
     GameObject mainCamera;
 
+    public GameObject groundObject;
+
     public bool carrying = false;
     GameObject carriedObject;
     private Rigidbody carriedObjectrb;
@@ -51,6 +53,8 @@ public class PickUpObject : MonoBehaviour {
 
     public AudioClip whooshClip;
 
+    public AudioClip groundClip;
+
 
 
 	void Start () {
@@ -80,17 +84,7 @@ public class PickUpObject : MonoBehaviour {
         {
             if (!carrying)
             {
-                torusRotation = Quaternion.Euler(90f, 0f, 0f);
-                GameObject p = objectPooler.SpawnFromPool("pillar", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
-                carrying = true;
-                carriedObject = p.gameObject;
-                p.gameObject.GetComponent<Rigidbody>().useGravity = false;
-                p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
-                p.gameObject.layer = 10;
-                Vector3 dist = p.transform.position - mainCamera.transform.position;
-                distance = dist.magnitude;
-                q = p.transform.rotation;
-                gun.GetComponent<GunDisplay>().UpdateDisplay();
+                SpawnWoodObject("pillar");
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -98,36 +92,17 @@ public class PickUpObject : MonoBehaviour {
             if (!carrying)
             
             {
-                torusRotation = Quaternion.Euler(90f, 0f, 0f);
-                GameObject p = objectPooler.SpawnFromPool("medium", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
-                carrying = true;
-                carriedObject = p.gameObject;
-                p.gameObject.GetComponent<Rigidbody>().useGravity = false;
-                p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
-                p.gameObject.layer = 10;
-                Vector3 dist = p.transform.position - mainCamera.transform.position;
-                distance = dist.magnitude;
-                q = p.transform.rotation;            
-                gun.GetComponent<GunDisplay>().UpdateDisplay();
+                SpawnWoodObject("medium");
 
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             if (!carrying)
+
             {
-                torusRotation = Quaternion.Euler(90f, 0f, 0f);
-                GameObject p = objectPooler.SpawnFromPool("plank", mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
-                carrying = true;
-                carriedObject = p.gameObject;
-                p.gameObject.GetComponent<Rigidbody>().useGravity = false;
-                p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
-                p.gameObject.layer = 10;
-                Vector3 dist = p.transform.position - mainCamera.transform.position;
-                distance = dist.magnitude;
-                q = p.transform.rotation;
-                gun.GetComponent<GunDisplay>().UpdateDisplay();
-            }       
+                SpawnWoodObject("plank");
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.I))
@@ -145,7 +120,7 @@ public class PickUpObject : MonoBehaviour {
         {
             PickUp();
         }
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2"))
         {
             if (triggeredWelcomeScreen == false)
             {
@@ -154,16 +129,27 @@ public class PickUpObject : MonoBehaviour {
                 gun.GetComponent<GunDisplay>().UpdateDisplay();
             }
         }
-        if (Input.GetButtonDown("Fire2"))
-        {
-            if (triggeredWelcomeScreen == false)
-            {
-                triggeredWelcomeScreen = true;
+        
+    }
 
-                gun.GetComponent<GunDisplay>().UpdateDisplay();
-            }
-        }
-        }
+    void SpawnWoodObject(string type)
+    {
+        audiosource.clip = whooshClip;
+        audiosource.Play(0);
+        torusRotation = Quaternion.Euler(90f, 0f, 0f);
+        GameObject p = objectPooler.SpawnFromPool(type, mainCamera.transform.position + mainCamera.transform.forward * distance, mainCamera.transform.rotation);
+        carrying = true;
+        carriedObject = p.gameObject;
+        p.gameObject.GetComponent<Rigidbody>().useGravity = false;
+        p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+        p.gameObject.layer = 10;
+        
+        Vector3 dist = p.transform.position - mainCamera.transform.position;
+        distance = dist.magnitude;
+        q = p.transform.rotation;
+        gun.GetComponent<GunDisplay>().UpdateDisplay();
+    }
+
 
     void Carry(GameObject o) {
 
@@ -204,81 +190,91 @@ public class PickUpObject : MonoBehaviour {
             audiosource.Play(0);
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                carriedObject.transform.localScale -= new Vector3(0.01f, 0f, 0f);
-                carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x-0.04f, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
+                ws.length -= 2f;
+                ws.UpdateWood();
+               // carriedObject.transform.localScale -= new Vector3(0.01f, 0f, 0f);
+               // carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x-0.04f, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
             }
             else
             {
+                ws.length -= 5f;
+                ws.UpdateWood();
                 float rnd = Random.Range(-0.01f, 0.01f);
-                carriedObject.transform.localScale -= new Vector3(0.05f + rnd, 0f, 0f);
-                carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x - 0.2f + rnd, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
+               // carriedObject.transform.localScale -= new Vector3(0.05f + rnd, 0f, 0f);
+                //carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x - 0.2f + rnd, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
             }
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Alpha1) && carriedObject.transform.localScale.x > 0.1f && Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && Input.GetKey(KeyCode.LeftShift))
         {
-
-            carriedObject.transform.localScale = new Vector3(0.1f, 1f, 1f);
+            ws.length = 10f;
+            ws.UpdateWood();
+            //            carriedObject.transform.localScale = new Vector3(0.1f, 1f, 1f);
             audiosource.clip = chopWoodClip;
             audiosource.Play(0);
-
-
         }
-
         if (Input.GetKeyDown(KeyCode.Alpha2) && Input.GetKey(KeyCode.LeftShift))
         {
-
-            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.2f, 1f, 1f);
+            ws.length = 18f;
+            ws.UpdateWood();
+            //carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.2f, 1f, 1f);
             audiosource.clip = chopWoodClip;
             audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3) && Input.GetKey(KeyCode.LeftShift))
         {
-
-            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.3f, 1f, 1f);
+            ws.length = 26f;
+            ws.UpdateWood();
+            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.3f, 1f, 1f);
             audiosource.clip = chopWoodClip;
             audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4) &&  Input.GetKey(KeyCode.LeftShift))
         {
-
-            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.4f, 1f, 1f);
+            ws.length = 32f;
+            ws.UpdateWood();
+            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.4f, 1f, 1f);
             audiosource.clip = chopWoodClip;
             audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha5) && Input.GetKey(KeyCode.LeftShift))
         {
-
-            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.5f, 1f, 1f);
+            ws.length = 40f;
+            ws.UpdateWood();
+            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.5f, 1f, 1f);
             audiosource.clip = chopWoodClip;
             audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha6) &&  Input.GetKey(KeyCode.LeftShift))
         {
-
-            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.6f, 1f, 1f);
+            ws.length = 48f;
+            ws.UpdateWood();
+            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.6f, 1f, 1f);
             audiosource.clip = chopWoodClip;
             audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha7) && Input.GetKey(KeyCode.LeftShift))
         {
-
-            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.7f, 1f, 1f);
+            ws.length = 56f;
+            ws.UpdateWood();
+            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.7f, 1f, 1f);
             audiosource.clip = chopWoodClip;
             audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha8) &&  Input.GetKey(KeyCode.LeftShift))
         {
-
-            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.8f, 1f, 1f);
+            ws.length = 64f;
+            ws.UpdateWood();
+            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.8f, 1f, 1f);
             audiosource.clip = chopWoodClip;
             audiosource.Play(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha9) &&  Input.GetKey(KeyCode.LeftShift))
         {
-
-            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.9f, 1f, 1f);
+            ws.length = 74f;
+            ws.UpdateWood();
+            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.9f, 1f, 1f);
             audiosource.clip = chopWoodClip;
             audiosource.Play(0);
         }
@@ -433,6 +429,8 @@ public class PickUpObject : MonoBehaviour {
 
             if (ws.endColliderTriggered == true)
             {
+                audiosource.clip = groundClip;
+                audiosource.Play(0);
                 float storedHeight = carriedObject.transform.position.y;
                 carriedObject.transform.position -= carriedObject.transform.right/2;
                 if (carriedObject.transform.position.y > storedHeight)
@@ -440,7 +438,8 @@ public class PickUpObject : MonoBehaviour {
                     carriedObject.transform.position += carriedObject.transform.right ;
                 }
                 carriedObject.transform.GetComponent<Rigidbody>().isKinematic = true;
-               // Destroy(carriedObject.GetComponent<Pickupable>());
+                // Destroy(carriedObject.GetComponent<Pickupable>());
+                carriedObject.transform.parent = groundObject.transform;
                 DropObject();
             }
         }
@@ -455,7 +454,7 @@ public class PickUpObject : MonoBehaviour {
 
     void PickUp()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire1"))
         {
             int x = Screen.width / 2;
             int y = Screen.height / 2;
@@ -465,6 +464,8 @@ public class PickUpObject : MonoBehaviour {
             if (Physics.Raycast(ray, out hit)) {
                 Pickupable p = hit.collider.GetComponent<Pickupable>();
                 if (p != null) {
+                    audiosource.clip = whooshClip;
+                    audiosource.Play(0);
                     carrying = true;
                     carriedObject = p.gameObject;
                     p.transform.parent = null;
@@ -472,6 +473,11 @@ public class PickUpObject : MonoBehaviour {
                     p.gameObject.GetComponent<Rigidbody>().useGravity = false;
                     p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
                     p.gameObject.layer = 10;
+                    Transform[] allChildren = p.GetComponentsInChildren<Transform>();
+                    foreach (Transform child in allChildren)
+                    {
+                        child.gameObject.layer = 10;
+                    }
                     Vector3 dist = p.transform.position - mainCamera.transform.position;
                     distance = dist.magnitude;
                     q = p.transform.rotation;
@@ -501,6 +507,12 @@ public class PickUpObject : MonoBehaviour {
         carriedObject.GetComponent<Rigidbody>().useGravity = true;
         carriedObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Discrete;
         carriedObject.gameObject.layer = 0;
+        Transform[] allChildren = carriedObject.GetComponentsInChildren<Transform>();
+        foreach (Transform child in allChildren)
+        {
+            child.gameObject.layer = 0;
+        }
+
         carriedObject = null;
         carriedObjectrb = null;
         userRotationX = 0;

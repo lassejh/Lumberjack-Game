@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class WoodScript : MonoBehaviour {
 
-   
+    private Vector2 rndom;
+    float rnd;
 
     public float length;
     public int width;
@@ -29,7 +30,10 @@ public class WoodScript : MonoBehaviour {
 
     public GameObject touchedObj;
 
-    void Awake () {
+    void Start () {
+        rnd = Random.Range(0.9f, 1f);
+        rndom = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+
         UpdateWood();
         
 
@@ -44,11 +48,11 @@ public class WoodScript : MonoBehaviour {
         endCollider1.transform.rotation = transform.rotation;
         endCollider2.transform.rotation = transform.rotation;
         this.transform.GetComponent<Renderer>().material = woodMat;
-        this.transform.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+        this.transform.GetComponent<Renderer>().material.mainTextureOffset = rndom;
         this.transform.GetComponent<Renderer>().material.mainTextureScale = new Vector2(4,0.4f);
         this.transform.GetComponent<Renderer>().material.SetTextureOffset("_DetailAlbedoMap", new Vector2(0,0));
         this.transform.GetComponent<Renderer>().material.SetTextureScale("_DetailAlbedoMap", new Vector2(1, 1f));
-        float rnd = Random.Range(0.9f, 1f);
+        
         this.transform.GetComponent<Renderer>().material.color = new Color(rnd,rnd,rnd);
         endCollider1.transform.localScale = new Vector3(0.05f, width / multiplier, height / multiplier);
         endCollider2.transform.localScale = new Vector3(0.05f, width / multiplier, height / multiplier);
