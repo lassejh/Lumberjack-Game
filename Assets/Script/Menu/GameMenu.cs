@@ -51,6 +51,9 @@ public class GameMenu : MonoBehaviour
     public void LoadMenu()
 
     {
+        gameMenu.SetActive(false);
+        Time.timeScale = 1f;
+        gamePaused = false;
         SceneManager.LoadScene(0);
     }
 
