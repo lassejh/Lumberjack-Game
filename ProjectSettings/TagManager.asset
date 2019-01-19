@@ -8,6 +8,7 @@ TagManager:
   - ground
   - wood
   - wooden
+  - tree
   layers:
   - Default
   - TransparentFX
@@ -42,6 +43,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: DISPLAY
+    uniqueID: 3123627225
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

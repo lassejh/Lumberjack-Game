@@ -18,7 +18,8 @@ public class PickUpObject : MonoBehaviour {
     private Vector3 trackVelocity;
     private Vector3 lastPos;
 
-    public GameObject gun;
+    public GameObject gun; // GunScreenDisplay panel
+    public GameObject gunHoloDisplay; // Gun Holo Display
 
     //Variabler der holder styr på spillerens rotationsinput
     private Quaternion q;
@@ -105,9 +106,10 @@ public class PickUpObject : MonoBehaviour {
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.X))
         {
             gun.SetActive(!gun.active);
+            gunHoloDisplay.SetActive(!gunHoloDisplay.active);
         }
 
 

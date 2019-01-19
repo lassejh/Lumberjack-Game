@@ -10,6 +10,7 @@ public class GunDisplay : MonoBehaviour
     public GameObject panel1; // Intro message
     public GameObject panel2; // Carrying false
     public GameObject panel3; // Carrying true
+    public GameObject panelHolographic; // On the gun
 
     //public GameObject introMessage;
 
@@ -18,6 +19,7 @@ public class GunDisplay : MonoBehaviour
 
     private void Start()
     {
+        panelHolographic.SetActive(true);
         panel1.SetActive(true);
         panel2.SetActive(false);
         panel3.SetActive(false);
@@ -28,13 +30,14 @@ public class GunDisplay : MonoBehaviour
         
         if (firstpersoncontroller.GetComponent<PickUpObject>().carrying == true)
         {
-
+            //panelHolographic.SetActive(true);
             panel1.SetActive(false);
             panel2.SetActive(false);
             panel3.SetActive(true);
         }
         else
         {
+            //panelHolographic.SetActive(true);
             panel1.SetActive(false);
             panel2.SetActive(true);
             panel3.SetActive(false);

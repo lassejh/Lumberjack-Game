@@ -194,6 +194,7 @@ GameObject:
   - component: {fileID: 13600000}
   - component: {fileID: 11400004}
   - component: {fileID: 1875559247}
+  - component: {fileID: 746350839}
   m_Layer: 0
   m_Name: BACKUP_RigidBodyFPSController
   m_TagString: Untagged
@@ -318,12 +319,116 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f6045eccff559240b99c2e46cddab65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundObject: {fileID: 0}
   carrying: 0
   distance: 5
   multiplier: 5
+  gun: {fileID: 8440298505528556023}
+  gunHoloDisplay: {fileID: 4589053082354284713}
   capMaterial: {fileID: 0}
   torus: {fileID: 0}
   torusMaterial: {fileID: 2100000, guid: eb6938e7df11d8c4d99c94127f0681ef, type: 2}
+  woodClips:
+  - {fileID: 8300000, guid: e14973dc4a752684b8d49bca146117ac, type: 3}
+  chopWoodClip: {fileID: 8300000, guid: c816bc776c5adb446b41301c8dde446b, type: 3}
+  whooshClip: {fileID: 8300000, guid: c817cbdce838f8f41b2cba21d8ca92ec, type: 3}
+  groundClip: {fileID: 8300000, guid: 4c61851161caf4044b02cbf29dc3bbff, type: 3}
+--- !u!82 &746350839
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c816bc776c5adb446b41301c8dde446b, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.134
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1249865986419588341
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,6 +489,7 @@ Transform:
   m_Children:
   - {fileID: 8344542551075188551}
   - {fileID: 8519111841375147473}
+  - {fileID: 1926215103744975011}
   m_Father: {fileID: 4827462888102506195}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -445,7 +551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.22352941, g: 0.3882353, b: 0.07058824, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -465,23 +571,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'LMB - Place on wood
-
-    RMB - Place in ground
-
-
-    E - Drop item
-
-    R - Rotate item
-
-    T - Change axis
-
-    Q - Shorten item (+Shift)
-
-
-    SCROLL WHEEL
-
-    - Control distance'
+  m_Text: "LMB - Place on wood\nRMB - Place in ground\n\nE - Drop item\n\nQ - Shorten
+    item *\n\nR - Rotate item *\nT - Change axis\n\n* Hold down SHIFT\n  for precision\n\nSCROLL
+    WHEEL\n- Control distance"
 --- !u!1 &7642766797537119493
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,6 +605,87 @@ Transform:
   m_Father: {fileID: 400000}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1971941116
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 73727853860131922}
+    m_Modifications:
+    - target: {fileID: 1926215102445342300, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_Name
+      value: MultiTool
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.542
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d1eb2aa8c4001438186861222d2721b7, type: 3}
+--- !u!4 &1926215103744975011 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1971941116}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4589053082354284713 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4589053080937043541, guid: d1eb2aa8c4001438186861222d2721b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1971941116}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8344542551074796997
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -523,6 +696,10 @@ PrefabInstance:
     - target: {fileID: 100002, guid: 0b0803619938a46fba2935942a04fc98, type: 3}
       propertyPath: m_Name
       value: builder_gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 0b0803619938a46fba2935942a04fc98, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 0b0803619938a46fba2935942a04fc98, type: 3}
       propertyPath: m_LocalPosition.x
@@ -569,6 +746,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300004, guid: 0b0803619938a46fba2935942a04fc98, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300004, guid: 0b0803619938a46fba2935942a04fc98, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ded6059e0e5c54505acbd5c3787c1f71, type: 2}
@@ -576,10 +757,22 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2300006, guid: 0b0803619938a46fba2935942a04fc98, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 0b0803619938a46fba2935942a04fc98, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 0b0803619938a46fba2935942a04fc98, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 2502c8bf077a540279c7f351d5dfd054, type: 2}
+    - target: {fileID: 2300002, guid: 0b0803619938a46fba2935942a04fc98, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2300002, guid: 0b0803619938a46fba2935942a04fc98, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -616,7 +809,7 @@ PrefabInstance:
     - target: {fileID: 224500505207253278, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.442
+      value: -1.151
       objectReference: {fileID: 0}
     - target: {fileID: 224500505207253278, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
@@ -661,12 +854,12 @@ PrefabInstance:
     - target: {fileID: 224500505207253278, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.44
+      value: -0.538
       objectReference: {fileID: 0}
     - target: {fileID: 224500505207253278, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.11
+      value: 1.165
       objectReference: {fileID: 0}
     - target: {fileID: 224500505207253278, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
@@ -730,6 +923,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224161008164227466, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 17.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224161008164227466, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
       propertyPath: m_SizeDelta.x
       value: 211.2
       objectReference: {fileID: 0}
@@ -743,6 +941,16 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 2000000}
+    - target: {fileID: 223010616548139934, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1171340071
+      objectReference: {fileID: 0}
+    - target: {fileID: 223010616548139934, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5008937236234015195, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: firstpersoncontroller
@@ -758,18 +966,52 @@ PrefabInstance:
       propertyPath: panel3
       value: 
       objectReference: {fileID: 5120406091192317839}
+    - target: {fileID: 5008937236234015195, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: panelHolographic
+      value: 
+      objectReference: {fileID: 4589053082354284713}
+    - target: {fileID: 4581533210025579803, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 114474099130325084, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
-      propertyPath: m_Material
-      value: 
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1567903022544328, guid: e6e285f68c0154ac1b93c6b61ca1b799, type: 3}
       propertyPath: m_Name
       value: Panel2
       objectReference: {fileID: 0}
+    - target: {fileID: 1567903022544328, guid: e6e285f68c0154ac1b93c6b61ca1b799, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 222843303216243806, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4572103193399514969, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_CullTransparentMesh
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3230455637922553981, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3230455637922553981, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3230455637922553981, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3230455637922553981, guid: e6e285f68c0154ac1b93c6b61ca1b799,
@@ -790,7 +1032,22 @@ PrefabInstance:
     - target: {fileID: 3230455637922553981, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_Text
-      value: BUILD YOUR DREAMS...
+      value: BUILD YOUR DREAMS
+      objectReference: {fileID: 0}
+    - target: {fileID: 114624430460844774, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114624430460844774, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114624430460844774, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114624430460844774, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
@@ -799,8 +1056,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114624430460844774, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 114624430460844774, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
       propertyPath: m_Text
-      value: (i) TOGGLE INFORMATION PANEL
+      value: X - ON/OFF DISPLAY
+      objectReference: {fileID: 0}
+    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
@@ -810,14 +1087,17 @@ PrefabInstance:
     - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_Text
-      value: '1 - SPAWN WOOD PILAR
+      value: 'LMB - SHOOT & CUT TREES
+
+
+        E - PICK UP ITEM
+
+
+        1 - SPAWN WOOD PILLAR
 
         2 - SPAWN WOOD LOG
 
-        3 - SPAWN WOOD PLANK
-
-
-        E - PICK UP ITEM'
+        3 - SPAWN WOOD PLANK'
       objectReference: {fileID: 0}
     - target: {fileID: 222097837100980470, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
@@ -834,6 +1114,12 @@ PrefabInstance:
 --- !u!224 &8519111841375147473 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224500505207253278, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+    type: 3}
+  m_PrefabInstance: {fileID: 8440978324057717967}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8440298505528556023 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1574319967782200, guid: e6e285f68c0154ac1b93c6b61ca1b799,
     type: 3}
   m_PrefabInstance: {fileID: 8440978324057717967}
   m_PrefabAsset: {fileID: 0}
