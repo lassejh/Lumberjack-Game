@@ -18,8 +18,7 @@ public class PickUpObject : MonoBehaviour {
     private Vector3 trackVelocity;
     private Vector3 lastPos;
 
-    public GameObject gun; // GunScreenDisplay panel
-    public GameObject gunHoloDisplay; // Gun Holo Display
+    public GameObject gun;
 
     //Variabler der holder styr på spillerens rotationsinput
     private Quaternion q;
@@ -56,9 +55,16 @@ public class PickUpObject : MonoBehaviour {
 
     public AudioClip groundClip;
 
+    public AudioClip blasterClip;
+
+    public GameObject impactEffect;
+    public float range = 100f;
+    public float damage = 1f;
+    public float impactForce = 30f;
 
 
-	void Start () {
+
+    void Start () {
         mainCamera = GameObject.FindWithTag("MainCamera");
         objectPooler = ObjectPooler.Instance;
         carrying = false;
@@ -76,7 +82,7 @@ public class PickUpObject : MonoBehaviour {
             {
                 if (hit.transform.tag == "wood")
                 {
-                    hit.transform.position += Vector3.down * 1000f;
+                    hit.transform.position += Vector3.down * 100f;
                 }
             }
         }
@@ -106,10 +112,9 @@ public class PickUpObject : MonoBehaviour {
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             gun.SetActive(!gun.active);
-            gunHoloDisplay.SetActive(!gunHoloDisplay.active);
         }
 
 
@@ -122,13 +127,40 @@ public class PickUpObject : MonoBehaviour {
         {
             PickUp();
         }
-        if (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire1"))
         {
             if (triggeredWelcomeScreen == false)
             {
                 triggeredWelcomeScreen = true;
 
                 gun.GetComponent<GunDisplay>().UpdateDisplay();
+            }
+            audiosource.clip = blasterClip;
+            audiosource.Play(0);
+            int layerMask = 1 << 11;
+            layerMask = ~layerMask;
+            int x = Screen.width / 2;
+            int y = Screen.height / 2;
+            Ray ray = mainCamera.GetComponent<Camera>().ScreenPointToRay(new Vector3(x, y));
+            RaycastHit hit;
+            if (Physics.Raycast(ray,out hit, 100f,layerMask))
+            {
+                if (hit.collider.tag == "enemy")
+                {
+                    
+                    //Enemy[] p = hit.collider.GetComponentsInChildren<Enemy>();
+                    Enemy[] p = hit.collider.GetComponentsInParent<Enemy>();
+                    foreach (Enemy item in p)
+                    {
+                        if (item != null)
+                        {
+                            p[0].Damage(10);
+                            Rigidbody rb = hit.rigidbody;
+                            rb.AddForceAtPosition(mainCamera.transform.forward * 10f, hit.point, ForceMode.Impulse);
+                            break;
+                        }
+                    }
+                }
             }
         }
         
@@ -143,7 +175,7 @@ public class PickUpObject : MonoBehaviour {
         carrying = true;
         carriedObject = p.gameObject;
         p.gameObject.GetComponent<Rigidbody>().useGravity = false;
-        p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+        p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         p.gameObject.layer = 10;
         
         Vector3 dist = p.transform.position - mainCamera.transform.position;
@@ -156,131 +188,130 @@ public class PickUpObject : MonoBehaviour {
     void Carry(GameObject o) {
 
         ws = carriedObject.transform.GetChild(0).GetComponent<WoodScript>();
-        if (ws.sideCollider2Triggered && ws.sideCollider1Triggered) { torusMaterial.color = Color.green; }
-        else { torusMaterial.color = Color.blue; }
 
-        torus.SetActive(true);
+        if (ws != null)
+        {
+            if ( ws.sideCollider2Triggered && ws.sideCollider1Triggered) { torusMaterial.color = Color.green; }
+            else { torusMaterial.color = Color.blue; }
+
+            torus.SetActive(true);
 
 
-        torus.transform.rotation = transform.rotation;
+            torus.transform.rotation = transform.rotation;
         
-        torus.transform.position = carriedObject.transform.position;
-        torus.transform.GetChild(0).transform.localRotation = torusRotation;
+            torus.transform.position = carriedObject.transform.position;
+            torus.transform.GetChild(0).transform.localRotation = torusRotation;
 
-        if (ws.endColliderTriggered == true)
-        {
-            if (ws.arrowObject.transform.position.y > ws.arrowObject2.transform.position.y)
+            if (ws.endColliderTriggered == true)
             {
-                ws.arrowObject2.SetActive(true);
+                if (ws.arrowObject.transform.position.y > ws.arrowObject2.transform.position.y)
+                {
+                    ws.arrowObject2.SetActive(true);
+                }
+                else
+                {
+                    ws.arrowObject.SetActive(true);
+                }
             }
-            else
-            {
-                ws.arrowObject.SetActive(true);
+            else {
+                ws.arrowObject.SetActive(false);
+                ws.arrowObject2.SetActive(false);
             }
-        }
-        else {
-            ws.arrowObject.SetActive(false);
-            ws.arrowObject2.SetActive(false);
-        }
 
 
 
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            audiosource.clip = chopWoodClip;
-            audiosource.Play(0);
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
-                ws.length -= 2f;
+                audiosource.clip = chopWoodClip;
+                audiosource.Play(0);
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    ws.length -= 2f;
+                    ws.UpdateWood();
+                }
+                else
+                {
+                    ws.length -= 5f;
+                    ws.UpdateWood();
+                    float rnd = Random.Range(-0.01f, 0.01f);
+                }
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.Alpha1) && Input.GetKey(KeyCode.LeftShift))
+            {
+                ws.length = 10f;
                 ws.UpdateWood();
-               // carriedObject.transform.localScale -= new Vector3(0.01f, 0f, 0f);
-               // carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x-0.04f, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
+                //            carriedObject.transform.localScale = new Vector3(0.1f, 1f, 1f);
+                audiosource.clip = chopWoodClip;
+                audiosource.Play(0);
             }
-            else
+            if (Input.GetKeyDown(KeyCode.Alpha2) && Input.GetKey(KeyCode.LeftShift))
             {
-                ws.length -= 5f;
+                ws.length = 18f;
                 ws.UpdateWood();
-                float rnd = Random.Range(-0.01f, 0.01f);
-               // carriedObject.transform.localScale -= new Vector3(0.05f + rnd, 0f, 0f);
-                //carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.x - 0.2f + rnd, carriedObject.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale.y);
+                //carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.2f, 1f, 1f);
+                audiosource.clip = chopWoodClip;
+                audiosource.Play(0);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) && Input.GetKey(KeyCode.LeftShift))
+            {
+                ws.length = 26f;
+                ws.UpdateWood();
+                //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.3f, 1f, 1f);
+                audiosource.clip = chopWoodClip;
+                audiosource.Play(0);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) &&  Input.GetKey(KeyCode.LeftShift))
+            {
+                ws.length = 32f;
+                ws.UpdateWood();
+                //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.4f, 1f, 1f);
+                audiosource.clip = chopWoodClip;
+                audiosource.Play(0);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5) && Input.GetKey(KeyCode.LeftShift))
+            {
+                ws.length = 40f;
+                ws.UpdateWood();
+                //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.5f, 1f, 1f);
+                audiosource.clip = chopWoodClip;
+                audiosource.Play(0);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6) &&  Input.GetKey(KeyCode.LeftShift))
+            {
+                ws.length = 48f;
+                ws.UpdateWood();
+                //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.6f, 1f, 1f);
+                audiosource.clip = chopWoodClip;
+                audiosource.Play(0);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha7) && Input.GetKey(KeyCode.LeftShift))
+            {
+                ws.length = 56f;
+                ws.UpdateWood();
+                //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.7f, 1f, 1f);
+                audiosource.clip = chopWoodClip;
+                audiosource.Play(0);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha8) &&  Input.GetKey(KeyCode.LeftShift))
+            {
+                ws.length = 64f;
+                ws.UpdateWood();
+                //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.8f, 1f, 1f);
+                audiosource.clip = chopWoodClip;
+                audiosource.Play(0);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha9) &&  Input.GetKey(KeyCode.LeftShift))
+            {
+                ws.length = 74f;
+                ws.UpdateWood();
+                //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.9f, 1f, 1f);
+                audiosource.clip = chopWoodClip;
+                audiosource.Play(0);
             }
         }
-
-
-        if (Input.GetKeyDown(KeyCode.Alpha1) && Input.GetKey(KeyCode.LeftShift))
-        {
-            ws.length = 10f;
-            ws.UpdateWood();
-            //            carriedObject.transform.localScale = new Vector3(0.1f, 1f, 1f);
-            audiosource.clip = chopWoodClip;
-            audiosource.Play(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2) && Input.GetKey(KeyCode.LeftShift))
-        {
-            ws.length = 18f;
-            ws.UpdateWood();
-            //carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.2f, 1f, 1f);
-            audiosource.clip = chopWoodClip;
-            audiosource.Play(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3) && Input.GetKey(KeyCode.LeftShift))
-        {
-            ws.length = 26f;
-            ws.UpdateWood();
-            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.3f, 1f, 1f);
-            audiosource.clip = chopWoodClip;
-            audiosource.Play(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4) &&  Input.GetKey(KeyCode.LeftShift))
-        {
-            ws.length = 32f;
-            ws.UpdateWood();
-            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.4f, 1f, 1f);
-            audiosource.clip = chopWoodClip;
-            audiosource.Play(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5) && Input.GetKey(KeyCode.LeftShift))
-        {
-            ws.length = 40f;
-            ws.UpdateWood();
-            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.5f, 1f, 1f);
-            audiosource.clip = chopWoodClip;
-            audiosource.Play(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha6) &&  Input.GetKey(KeyCode.LeftShift))
-        {
-            ws.length = 48f;
-            ws.UpdateWood();
-            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.6f, 1f, 1f);
-            audiosource.clip = chopWoodClip;
-            audiosource.Play(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha7) && Input.GetKey(KeyCode.LeftShift))
-        {
-            ws.length = 56f;
-            ws.UpdateWood();
-            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.7f, 1f, 1f);
-            audiosource.clip = chopWoodClip;
-            audiosource.Play(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha8) &&  Input.GetKey(KeyCode.LeftShift))
-        {
-            ws.length = 64f;
-            ws.UpdateWood();
-            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.8f, 1f, 1f);
-            audiosource.clip = chopWoodClip;
-            audiosource.Play(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha9) &&  Input.GetKey(KeyCode.LeftShift))
-        {
-            ws.length = 74f;
-            ws.UpdateWood();
-            //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.9f, 1f, 1f);
-            audiosource.clip = chopWoodClip;
-            audiosource.Play(0);
-        }
-
 
         carriedObjectrb = o.GetComponent<Rigidbody>();
 
@@ -359,8 +390,7 @@ public class PickUpObject : MonoBehaviour {
         }
         userRotationQ = Quaternion.Euler(userRotationX, userRotationY, userRotationZ);
 
-
-
+       
         if (Input.GetKeyDown(KeyCode.T))
         {
             userRotationAxis += 1;
@@ -382,7 +412,7 @@ public class PickUpObject : MonoBehaviour {
                  torusRotation = Quaternion.Euler(0f, 0f, 90f);
              }
         }
-        if (ws.sideCollider2Triggered ||ws.sideCollider1Triggered)
+        if (ws != null && ws.sideCollider2Triggered || ws != null && ws.sideCollider1Triggered)
         {
             Vector3 actualDistance = carriedObject.transform.position - mainCamera.transform.position;
             if (distance > actualDistance.magnitude + 0.3f)
@@ -401,51 +431,52 @@ public class PickUpObject : MonoBehaviour {
         {
             distance = 9.9f;
         }
-        
 
-        if (Input.GetButtonDown("Fire1"))
+        if (ws != null)
         {
+            if (Input.GetButtonDown("Fire1"))
+            {
             
 
-            if (ws.sideCollider2Triggered == true && ws.sideCollider1Triggered == true)
-            {
-                carriedObject.transform.parent = ws.touchedObj.transform.parent;
-                carriedObject.transform.GetComponent<Rigidbody>().isKinematic = true;
-                //Destroy(carriedObject.GetComponent<Pickupable>());
-                carriedObject.transform.position += -toMarker.normalized * ws.width/ws.multiplier * 0.4f;
-                Vector3 actualDistance = carriedObject.transform.position - mainCamera.transform.position;
-                
-                
-                distance = actualDistance.magnitude-0.4F;
-                audiosource.clip = woodClips[Random.Range(0, woodClips.Length - 1)];
-                audiosource.Play(0);
-                DropObject();
-
-            }   
-        }
-
-        if (Input.GetButtonDown("Fire2"))
-
-        {
-            
-
-            if (ws.endColliderTriggered == true)
-            {
-                audiosource.clip = groundClip;
-                audiosource.Play(0);
-                float storedHeight = carriedObject.transform.position.y;
-                carriedObject.transform.position -= carriedObject.transform.right/2;
-                if (carriedObject.transform.position.y > storedHeight)
+                if (ws.sideCollider2Triggered == true && ws.sideCollider1Triggered == true)
                 {
-                    carriedObject.transform.position += carriedObject.transform.right ;
+                    carriedObject.transform.parent = ws.touchedObj.transform.parent;
+                    carriedObject.transform.GetComponent<Rigidbody>().isKinematic = true;
+                    //Destroy(carriedObject.GetComponent<Pickupable>());
+                    carriedObject.transform.position += -toMarker.normalized * ws.width/ws.multiplier * 0.4f;
+                    Vector3 actualDistance = carriedObject.transform.position - mainCamera.transform.position;
+                
+                
+                    distance = actualDistance.magnitude-0.4F;
+                    audiosource.clip = woodClips[Random.Range(0, woodClips.Length - 1)];
+                    audiosource.Play(0);
+                    DropObject();
+
+                }   
+            }
+
+            if (Input.GetButtonDown("Fire2"))
+
+            {
+            
+
+                if (ws.endColliderTriggered == true)
+                {
+                    audiosource.clip = groundClip;
+                    audiosource.Play(0);
+                    float storedHeight = carriedObject.transform.position.y;
+                    carriedObject.transform.position -= carriedObject.transform.right/2;
+                    if (carriedObject.transform.position.y > storedHeight)
+                    {
+                        carriedObject.transform.position += carriedObject.transform.right ;
+                    }
+                    carriedObject.transform.GetComponent<Rigidbody>().isKinematic = true;
+                    // Destroy(carriedObject.GetComponent<Pickupable>());
+                    carriedObject.transform.parent = groundObject.transform;
+                    DropObject();
                 }
-                carriedObject.transform.GetComponent<Rigidbody>().isKinematic = true;
-                // Destroy(carriedObject.GetComponent<Pickupable>());
-                carriedObject.transform.parent = groundObject.transform;
-                DropObject();
             }
         }
-
         if (carriedObjectrb != null)
         {
             carriedObjectrb.velocity = Vector3.zero;
@@ -456,7 +487,7 @@ public class PickUpObject : MonoBehaviour {
 
     void PickUp()
     {
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire1"))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             int x = Screen.width / 2;
             int y = Screen.height / 2;
@@ -473,7 +504,7 @@ public class PickUpObject : MonoBehaviour {
                     p.transform.parent = null;
                     p.gameObject.GetComponent<Rigidbody>().isKinematic = false;
                     p.gameObject.GetComponent<Rigidbody>().useGravity = false;
-                    p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+                    p.gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                     p.gameObject.layer = 10;
                     Transform[] allChildren = p.GetComponentsInChildren<Transform>();
                     foreach (Transform child in allChildren)

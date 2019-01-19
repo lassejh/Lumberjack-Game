@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WoodScript : MonoBehaviour {
-
+    public float maxHealth = 100f;
+    private float hp;
     private Vector2 rndom;
     float rnd;
 
@@ -31,6 +32,10 @@ public class WoodScript : MonoBehaviour {
     public GameObject touchedObj;
 
     void Start () {
+        if (hp < 100f)
+        {
+            hp = 100f;
+        }
         rnd = Random.Range(0.9f, 1f);
         rndom = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
 
@@ -80,5 +85,22 @@ public class WoodScript : MonoBehaviour {
         sideCollider2.transform.localScale = new Vector3(length / multiplier / 2, width / multiplier + 0.02f, height / multiplier + 0.02f);
         sideCollider2.transform.localPosition = new Vector3( transform.localScale.x * 0.25f, 0f, 0f);
         
+    }
+
+    public void Damage(float dmg)
+    {
+        hp -= dmg;
+        Debug.Log("took damage" + transform.parent.gameObject);
+        if (hp <= 0f)
+        {
+            transform.position = new Vector3(0, -100f, 0);
+            //Destroy(transform.gameObject); 
+        }
+    }
+    public void Repair(float hpoints)
+    {
+        hp += hpoints;
+        if (hp > maxHealth)
+        { hp = maxHealth; }
     }
 }
