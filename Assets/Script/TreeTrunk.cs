@@ -2,26 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TreeTrunk : MonoBehaviour {
-
-    public float health = 3f;
+public class TreeTrunk : MonoBehaviour
+{
     Rigidbody rb;
-
+    public float health = 3f;
     public bool treeHasBeenCut;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
-
-
-    void Update () {
-        if(treeHasBeenCut)
-        {
-            // When Player hits the log it turns into wood.
-
-        }
-	}
 
     public void ChopTrunk(float damage)
     {
@@ -38,5 +28,8 @@ public class TreeTrunk : MonoBehaviour {
         transform.parent = null;
 
         treeHasBeenCut = true;
+
+        // Give Player wood reward
+
     }
 }
