@@ -21,7 +21,7 @@ public class MenuControls : MonoBehaviour {
         anyWhereText.SetActive(false);
     }
 
-    public void PlayGame()
+    public void PlayCreativeGame()
 
     {
 
@@ -29,6 +29,17 @@ public class MenuControls : MonoBehaviour {
         loadingScreen.SetActive(true);
         SceneManager.LoadScene(1);
     }
+
+
+    public void PlayDefenseGame()
+
+    {
+
+        menuMusic.Stop();
+        loadingScreen.SetActive(true);
+        SceneManager.LoadScene(2);
+    }
+
 
     public void ExitGame()
 
