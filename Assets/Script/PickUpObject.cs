@@ -193,6 +193,28 @@ public class PickUpObject : MonoBehaviour {
                     }
                 }
                 */
+
+                // Testing start
+                RaycastHit hit;
+                if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, range))
+                {
+                    Debug.Log(hit.transform.name);
+
+                    TreeTrunk target = hit.transform.GetComponent<TreeTrunk>();
+
+                    if (target != null)
+                    {
+                        target.ChopTrunk(damage);
+
+                        if (hit.rigidbody != null)
+                        {
+                            hit.rigidbody.AddForce(-hit.normal * impactForce);
+                        }
+                        GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                        Destroy(impactGO, 2f);
+                    }
+                }
+                // Testing end
             }
         }
         
