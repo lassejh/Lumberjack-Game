@@ -25,7 +25,7 @@ public class TreeTrunk : MonoBehaviour
     void Die()
     {
         rb.GetComponent<Rigidbody>().isKinematic = false;
-        transform.parent = null;
+        //transform.parent = null;
 
         treeHasBeenCut = true;
 
