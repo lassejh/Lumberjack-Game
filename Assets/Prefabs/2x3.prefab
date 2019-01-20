@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4252349446609580}
   - component: {fileID: 65706380792561932}
   - component: {fileID: 114104717732254002}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: EndCollider1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 4208755390490038}
   - component: {fileID: 65880294067766196}
   - component: {fileID: 114323305048278146}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: SideCollider2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 114051401459521896}
   - component: {fileID: 65938051013897436}
   - component: {fileID: 114580224038304024}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: 2x3
   m_TagString: wood
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 4936718237396192}
   - component: {fileID: 65228876490790282}
   - component: {fileID: 114578521655167874}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: EndCollider2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 4740120368063386}
   - component: {fileID: 65657575367453264}
   - component: {fileID: 114737322067570788}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: SideCollider1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 23506455519262352}
   - component: {fileID: 65982896641667034}
   - component: {fileID: 114191563929683874}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Wood
   m_TagString: wooden
   m_Icon: {fileID: 0}
@@ -428,6 +428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b279c5d5df4d474fb6460a2362493dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customColor: 0
+  maxHealth: 100
   length: 90
   width: 2
   height: 3
@@ -442,6 +444,7 @@ MonoBehaviour:
   arrowObject: {fileID: 8020182870081988046}
   arrowObject2: {fileID: 7851700914403796340}
   woodMat: {fileID: 2100000, guid: c8a1690cf91b88f48b71bd309537941d, type: 2}
+  touchedObj: {fileID: 0}
 --- !u!1001 &7851700914403697620
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -456,6 +459,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 99284e0aa2be81749ad37c1cf8d11eb7, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 99284e0aa2be81749ad37c1cf8d11eb7, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 99284e0aa2be81749ad37c1cf8d11eb7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -545,6 +552,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 99284e0aa2be81749ad37c1cf8d11eb7, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 99284e0aa2be81749ad37c1cf8d11eb7, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 99284e0aa2be81749ad37c1cf8d11eb7, type: 3}
       propertyPath: m_LocalPosition.x

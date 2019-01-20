@@ -561,6 +561,7 @@ public class PickUpObject : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)) {
                 Pickupable p = hit.collider.GetComponent<Pickupable>();
+                MachineDisplay md = hit.collider.GetComponent<MachineDisplay>();
                 if (p != null) {
                     audiosource.clip = whooshClip;
                     audiosource.Play(0);
@@ -586,6 +587,10 @@ public class PickUpObject : MonoBehaviour {
                     gun.GetComponent<GunDisplay>().UpdateDisplay();
 
 
+                }
+                else if (md != null) {
+
+                    md.UpdateDisplay();
                 }
             }
         }

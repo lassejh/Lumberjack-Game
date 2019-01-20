@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 23771077350474430}
   - component: {fileID: 65728076214513748}
   - component: {fileID: 114709727284055200}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Wood
   m_TagString: wooden
   m_Icon: {fileID: 0}
@@ -104,6 +104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b279c5d5df4d474fb6460a2362493dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customColor: 0
+  maxHealth: 100
   length: 75
   width: 1
   height: 4
@@ -118,6 +120,7 @@ MonoBehaviour:
   arrowObject: {fileID: 3264819878859081553}
   arrowObject2: {fileID: 6720381118453097100}
   woodMat: {fileID: 2100000, guid: c8a1690cf91b88f48b71bd309537941d, type: 2}
+  touchedObj: {fileID: 0}
 --- !u!1 &1434273668221364
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +132,7 @@ GameObject:
   - component: {fileID: 4317528675099770}
   - component: {fileID: 65028600914386860}
   - component: {fileID: 114166011743395450}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: SideCollider2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +190,7 @@ GameObject:
   - component: {fileID: 4079581910831148}
   - component: {fileID: 65000911572166130}
   - component: {fileID: 114568971535549440}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: EndCollider2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,7 +247,7 @@ GameObject:
   - component: {fileID: 4425458082672470}
   - component: {fileID: 65421628653899128}
   - component: {fileID: 114560838913193084}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: SideCollider1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,7 +305,7 @@ GameObject:
   - component: {fileID: 4211814495649206}
   - component: {fileID: 65257739970648386}
   - component: {fileID: 114100769022629486}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: EndCollider1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,7 +364,7 @@ GameObject:
   - component: {fileID: 114211648127099690}
   - component: {fileID: 65366943454055152}
   - component: {fileID: 114410727894744484}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Plank
   m_TagString: wood
   m_Icon: {fileID: 0}
@@ -457,6 +460,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 99284e0aa2be81749ad37c1cf8d11eb7, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 99284e0aa2be81749ad37c1cf8d11eb7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.77
@@ -545,6 +552,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 99284e0aa2be81749ad37c1cf8d11eb7, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 99284e0aa2be81749ad37c1cf8d11eb7, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 99284e0aa2be81749ad37c1cf8d11eb7, type: 3}
       propertyPath: m_LocalPosition.x

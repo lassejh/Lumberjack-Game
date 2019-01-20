@@ -92,7 +92,7 @@ public class Enemy : MonoBehaviour
         
         if (rbMove != null)
         {
-            /*
+            
             int layerMask = 1 << 14;
             RaycastHit hit;
             if (Physics.Raycast(woodRay.transform.position, rbMove.transform.forward, out hit, 0.3f,layerMask))
@@ -167,7 +167,7 @@ public class Enemy : MonoBehaviour
 
 
             }
-            */
+            
             Vector3 movedDistance = rbMove.position - lastPos;
             
             anim.SetFloat("Speed", movedDistance.magnitude * 30f);
@@ -226,26 +226,5 @@ public class Enemy : MonoBehaviour
         rbMove.AddForce(Vector3.up * 100f + (transform.forward * -10f));
 
     }
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.tag == "wooden" && hasHit == false)
-        {
-
-            HitWood(other.gameObject);
-            int layerMask = 1 << 14;
-            Collider[] hitColliders = Physics.OverlapSphere(woodRay.transform.position, 0.3f, layerMask);
-            int i = 0;
-            while (i < hitColliders.Length)
-            {
-                WoodScript ws = hitColliders[i].GetComponent<WoodScript>();
-                if (ws != null && ws.tag == "wooden")
-                {
-                    ws.Damage(10f);
-                }
-                i++;
-            }
-
-
-        }
-    }
+   
 }
