@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PickUpObject : MonoBehaviour {
+
+    public GameObject laserPrefab;
+    public Transform bulletSpawnTarget;
     GameObject mainCamera;
 
     public GameObject groundObject;
@@ -141,41 +144,55 @@ public class PickUpObject : MonoBehaviour {
         else
         {
             PickUp();
-        }
-        if (Input.GetButtonDown("Fire1"))
-        {
-            if (triggeredWelcomeScreen == false)
-            {
-                triggeredWelcomeScreen = true;
 
-                gun.GetComponent<GunDisplay>().UpdateDisplay();
-            }
-            audiosource.clip = blasterClip;
-            audiosource.Play(0);
-            int layerMask = 1 << 11;
-            layerMask = ~layerMask;
-            int x = Screen.width / 2;
-            int y = Screen.height / 2;
-            Ray ray = mainCamera.GetComponent<Camera>().ScreenPointToRay(new Vector3(x, y));
-            RaycastHit hit;
-            if (Physics.Raycast(ray,out hit, 100f,layerMask))
+            if (Input.GetButtonDown("Fire1"))
             {
-                if (hit.collider.tag == "enemy")
+                if (triggeredWelcomeScreen == false)
                 {
-                    
-                    //Enemy[] p = hit.collider.GetComponentsInChildren<Enemy>();
-                    Enemy[] p = hit.collider.GetComponentsInParent<Enemy>();
-                    foreach (Enemy item in p)
+                    triggeredWelcomeScreen = true;
+
+                    gun.GetComponent<GunDisplay>().UpdateDisplay();
+                }
+                else 
+                {
+                    audiosource.clip = blasterClip;
+                    audiosource.Play(0);
+
+                    int x = Screen.width / 2;
+                    int y = Screen.height / 2;
+
+
+                    GameObject clone = Instantiate(laserPrefab, bulletSpawnTarget.position, bulletSpawnTarget.rotation) as GameObject;
+
+                    clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * 1200f);
+                }
+                /*
+                int layerMask = 1 << 11;
+                layerMask = ~layerMask;
+                int x = Screen.width / 2;
+                int y = Screen.height / 2;
+                Ray ray = mainCamera.GetComponent<Camera>().ScreenPointToRay(new Vector3(x, y));
+                RaycastHit hit;
+                if (Physics.Raycast(ray,out hit, 100f,layerMask))
+                {
+                    if (hit.collider.tag == "enemy")
                     {
-                        if (item != null)
+
+                        //Enemy[] p = hit.collider.GetComponentsInChildren<Enemy>();
+                        Enemy[] p = hit.collider.GetComponentsInParent<Enemy>();
+                        foreach (Enemy item in p)
                         {
-                            p[0].Damage(10);
-                            Rigidbody rb = hit.rigidbody;
-                            rb.AddForceAtPosition(mainCamera.transform.forward * 10f, hit.point, ForceMode.Impulse);
-                            break;
+                            if (item != null)
+                            {
+                                p[0].Damage(10);
+                                Rigidbody rb = hit.rigidbody;
+                                rb.AddForceAtPosition(mainCamera.transform.forward * 10f, hit.point, ForceMode.Impulse);
+                                break;
+                            }
                         }
                     }
                 }
+                */
             }
         }
         
@@ -244,12 +261,14 @@ public class PickUpObject : MonoBehaviour {
                 {
                     ws.length -= 2f;
                     ws.UpdateWood();
+                    ws.GetComponentInParent<SetColliderSize>().UpdateCollider();
                 }
                 else
                 {
                     ws.length -= 5f;
                     ws.UpdateWood();
                     float rnd = Random.Range(-0.01f, 0.01f);
+                    ws.GetComponentInParent<SetColliderSize>().UpdateCollider();
                 }
             }
 
@@ -258,6 +277,7 @@ public class PickUpObject : MonoBehaviour {
             {
                 ws.length = 10f;
                 ws.UpdateWood();
+                ws.GetComponentInParent<SetColliderSize>().UpdateCollider();
                 //            carriedObject.transform.localScale = new Vector3(0.1f, 1f, 1f);
                 audiosource.clip = chopWoodClip;
                 audiosource.Play(0);
@@ -266,6 +286,7 @@ public class PickUpObject : MonoBehaviour {
             {
                 ws.length = 18f;
                 ws.UpdateWood();
+                ws.GetComponentInParent<SetColliderSize>().UpdateCollider();
                 //carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.2f, 1f, 1f);
                 audiosource.clip = chopWoodClip;
                 audiosource.Play(0);
@@ -274,6 +295,7 @@ public class PickUpObject : MonoBehaviour {
             {
                 ws.length = 26f;
                 ws.UpdateWood();
+                ws.GetComponentInParent<SetColliderSize>().UpdateCollider();
                 //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.3f, 1f, 1f);
                 audiosource.clip = chopWoodClip;
                 audiosource.Play(0);
@@ -282,6 +304,7 @@ public class PickUpObject : MonoBehaviour {
             {
                 ws.length = 32f;
                 ws.UpdateWood();
+                ws.GetComponentInParent<SetColliderSize>().UpdateCollider();
                 //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.4f, 1f, 1f);
                 audiosource.clip = chopWoodClip;
                 audiosource.Play(0);
@@ -290,6 +313,7 @@ public class PickUpObject : MonoBehaviour {
             {
                 ws.length = 40f;
                 ws.UpdateWood();
+                ws.GetComponentInParent<SetColliderSize>().UpdateCollider();
                 //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.5f, 1f, 1f);
                 audiosource.clip = chopWoodClip;
                 audiosource.Play(0);
@@ -298,6 +322,7 @@ public class PickUpObject : MonoBehaviour {
             {
                 ws.length = 48f;
                 ws.UpdateWood();
+                ws.GetComponentInParent<SetColliderSize>().UpdateCollider();
                 //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.6f, 1f, 1f);
                 audiosource.clip = chopWoodClip;
                 audiosource.Play(0);
@@ -306,6 +331,7 @@ public class PickUpObject : MonoBehaviour {
             {
                 ws.length = 56f;
                 ws.UpdateWood();
+                ws.GetComponentInParent<SetColliderSize>().UpdateCollider();
                 //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.7f, 1f, 1f);
                 audiosource.clip = chopWoodClip;
                 audiosource.Play(0);
@@ -314,6 +340,7 @@ public class PickUpObject : MonoBehaviour {
             {
                 ws.length = 64f;
                 ws.UpdateWood();
+                ws.GetComponentInParent<SetColliderSize>().UpdateCollider();
                 //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.8f, 1f, 1f);
                 audiosource.clip = chopWoodClip;
                 audiosource.Play(0);
@@ -322,6 +349,7 @@ public class PickUpObject : MonoBehaviour {
             {
                 ws.length = 74f;
                 ws.UpdateWood();
+                ws.GetComponentInParent<SetColliderSize>().UpdateCollider();
                 //            carriedObject.transform.localScale = new Vector3(carriedObject.transform.localScale.x * 0.9f, 1f, 1f);
                 audiosource.clip = chopWoodClip;
                 audiosource.Play(0);

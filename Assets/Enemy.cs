@@ -59,6 +59,7 @@ public class Enemy : MonoBehaviour
         isDead = true;
         axe.GetComponent<Rigidbody>().isKinematic = false;
         axe.transform.parent = null;
+        axe.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)));
     }
 
     private void Update()
