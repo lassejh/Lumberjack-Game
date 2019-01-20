@@ -662,7 +662,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: d3438b7805f21498d9892a7bf7f81300, type: 3}
-    m_FontSize: 14
+    m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -787,6 +787,11 @@ PrefabInstance:
     - target: {fileID: 1926215102445342303, guid: d1eb2aa8c4001438186861222d2721b7,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4589053080934844567, guid: d1eb2aa8c4001438186861222d2721b7,
+        type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -963,13 +968,14 @@ PrefabInstance:
       propertyPath: m_CullTransparentMesh
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4581533210025579803, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1567903022544328, guid: e6e285f68c0154ac1b93c6b61ca1b799, type: 3}
       propertyPath: m_Name
       value: Panel2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1567903022544328, guid: e6e285f68c0154ac1b93c6b61ca1b799, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224161008164227466, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
@@ -1187,6 +1193,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RaycastTarget
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
