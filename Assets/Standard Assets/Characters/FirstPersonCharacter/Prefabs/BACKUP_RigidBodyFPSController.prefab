@@ -167,7 +167,7 @@ Behaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100004}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &1863744831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 11400004}
   - component: {fileID: 1875559247}
   - component: {fileID: 746350839}
+  - component: {fileID: 4470432141241535473}
   m_Layer: 0
   m_Name: BACKUP_RigidBodyFPSController
   m_TagString: Untagged
@@ -240,7 +241,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100006}
-  m_Material: {fileID: 13400000, guid: c2815a7ab32e42c4bb42f59caacb8ec1, type: 2}
+  m_Material: {fileID: 13400000, guid: 3aeb7dadc0c69d54d9e5777e9d5631f1, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -333,7 +334,108 @@ MonoBehaviour:
   chopWoodClip: {fileID: 8300000, guid: c816bc776c5adb446b41301c8dde446b, type: 3}
   whooshClip: {fileID: 8300000, guid: c817cbdce838f8f41b2cba21d8ca92ec, type: 3}
   groundClip: {fileID: 8300000, guid: 4c61851161caf4044b02cbf29dc3bbff, type: 3}
+  blasterClip: {fileID: 8300000, guid: b553e22f803a2b046a416dd5388e9911, type: 3}
+  impactEffect: {fileID: 0}
+  range: 100
+  damage: 1
+  impactForce: 30
 --- !u!82 &746350839
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c816bc776c5adb446b41301c8dde446b, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.134
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &4470432141241535473
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -510,7 +612,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5256229033985264637
 RectTransform:
   m_ObjectHideFlags: 0
@@ -551,7 +653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -571,9 +673,24 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "LMB - Place on wood\nRMB - Place in ground\n\nE - Drop item\n\nQ - Shorten
-    item *\n\nR - Rotate item *\nT - Change axis\n\n* Hold down SHIFT\n  for precision\n\nSCROLL
-    WHEEL\n- Control distance"
+  m_Text: 'LMB - Place on wood
+
+    RMB - Place in ground
+
+
+    E - Drop item
+
+    Q - Shorten item *
+
+    R - Rotate item *
+
+    T - Change axis
+
+
+    SCROLL - Adj. distance
+
+
+    * Hold down SHIFT for precision'
 --- !u!1 &7642766797537119493
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,6 +913,79 @@ PrefabInstance:
       propertyPath: m_Name
       value: DISPLAY
       objectReference: {fileID: 0}
+    - target: {fileID: 5008937236234015195, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: firstpersoncontroller
+      value: 
+      objectReference: {fileID: 100006}
+    - target: {fileID: 5008937236234015195, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: panel1
+      value: 
+      objectReference: {fileID: 5381943659941964244}
+    - target: {fileID: 5008937236234015195, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: panel3
+      value: 
+      objectReference: {fileID: 5120406091192317839}
+    - target: {fileID: 5008937236234015195, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: panelHolographic
+      value: 
+      objectReference: {fileID: 4589053082354284713}
+    - target: {fileID: 114474099130325084, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114474099130325084, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.1444464
+      objectReference: {fileID: 0}
+    - target: {fileID: 114474099130325084, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.2830189
+      objectReference: {fileID: 0}
+    - target: {fileID: 114474099130325084, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.052064802
+      objectReference: {fileID: 0}
+    - target: {fileID: 114474099130325084, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.89411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 222843303216243806, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567903022544328, guid: e6e285f68c0154ac1b93c6b61ca1b799, type: 3}
+      propertyPath: m_Name
+      value: Panel2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567903022544328, guid: e6e285f68c0154ac1b93c6b61ca1b799, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224161008164227466, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 17.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224161008164227466, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 211.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 224161008164227466, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 16.5
+      objectReference: {fileID: 0}
     - target: {fileID: 224500505207253278, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -916,84 +1106,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.004
       objectReference: {fileID: 0}
-    - target: {fileID: 114966145168142942, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_BlockingMask.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224161008164227466, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 17.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224161008164227466, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 211.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 224161008164227466, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 16.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 223010616548139934, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 2000000}
-    - target: {fileID: 223010616548139934, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_SortingLayerID
-      value: -1171340071
-      objectReference: {fileID: 0}
-    - target: {fileID: 223010616548139934, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5008937236234015195, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: firstpersoncontroller
-      value: 
-      objectReference: {fileID: 100006}
-    - target: {fileID: 5008937236234015195, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: panel1
-      value: 
-      objectReference: {fileID: 5381943659941964244}
-    - target: {fileID: 5008937236234015195, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: panel3
-      value: 
-      objectReference: {fileID: 5120406091192317839}
-    - target: {fileID: 5008937236234015195, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: panelHolographic
-      value: 
-      objectReference: {fileID: 4589053082354284713}
-    - target: {fileID: 4581533210025579803, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114474099130325084, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1567903022544328, guid: e6e285f68c0154ac1b93c6b61ca1b799, type: 3}
-      propertyPath: m_Name
-      value: Panel2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1567903022544328, guid: e6e285f68c0154ac1b93c6b61ca1b799, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 222843303216243806, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_CullTransparentMesh
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4572103193399514969, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_CullTransparentMesh
@@ -1022,7 +1134,12 @@ PrefabInstance:
     - target: {fileID: 3230455637922553981, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_FontData.m_FontSize
-      value: 39
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 3230455637922553981, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3230455637922553981, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
@@ -1032,12 +1149,76 @@ PrefabInstance:
     - target: {fileID: 3230455637922553981, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_Text
-      value: BUILD YOUR DREAMS
+      value: 'HELLO HUMAN,
+
+        MULTIBLASTER 3000
+
+        AT YOUR SERVICE.
+
+
+        PRESS FIRE TO
+
+        ENGAGE SYSTEMS.
+
+
+        11011100111'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.8901961
+      objectReference: {fileID: 0}
+    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Text
+      value: 'LMB - Shooting
+
+        RMB - Tree cutting
+
+
+        E - Pick up item
+
+
+        1 - Spawn Pilar
+
+        2 - Spawn Log
+
+        3 - Spawn Plank'
+      objectReference: {fileID: 0}
+    - target: {fileID: 222416706076953794, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114624430460844774, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_Color.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114624430460844774, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.8901961
       objectReference: {fileID: 0}
     - target: {fileID: 114624430460844774, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
@@ -1064,49 +1245,29 @@ PrefabInstance:
       propertyPath: m_Text
       value: X - ON/OFF DISPLAY
       objectReference: {fileID: 0}
-    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+    - target: {fileID: 114966145168142942, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_RaycastTarget
+      propertyPath: m_BlockingMask.m_Bits
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114990295801260298, guid: e6e285f68c0154ac1b93c6b61ca1b799,
-        type: 3}
-      propertyPath: m_Text
-      value: 'LMB - SHOOT & CUT TREES
-
-
-        E - PICK UP ITEM
-
-
-        1 - SPAWN WOOD PILLAR
-
-        2 - SPAWN WOOD LOG
-
-        3 - SPAWN WOOD PLANK'
       objectReference: {fileID: 0}
     - target: {fileID: 222097837100980470, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
       propertyPath: m_CullTransparentMesh
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 222416706076953794, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+    - target: {fileID: 223010616548139934, guid: e6e285f68c0154ac1b93c6b61ca1b799,
         type: 3}
-      propertyPath: m_CullTransparentMesh
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 2000000}
+    - target: {fileID: 223010616548139934, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1171340071
+      objectReference: {fileID: 0}
+    - target: {fileID: 223010616548139934, guid: e6e285f68c0154ac1b93c6b61ca1b799,
+        type: 3}
+      propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
