@@ -124,4 +124,13 @@ public class WoodScript : MonoBehaviour {
         if (hp > maxHealth)
         { hp = maxHealth; }
     }
+
+    public void DisableColliders()
+    {
+        sideCollider1.SetActive(false);
+        sideCollider2.SetActive(false);
+        endCollider1.SetActive(false);
+        endCollider2.SetActive(false);
+    }
+
 }

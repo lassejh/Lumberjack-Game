@@ -5,6 +5,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public GameObject woodRay;
+    public GameObject woodRay1;
+    public GameObject woodRay2;
     public GameObject moveObject;
     public Transform target;
     public int maxHp = 5;
@@ -53,8 +55,12 @@ public class Enemy : MonoBehaviour
     {
         SetKinematic(false);
         GetComponent<Animator>().enabled = false;
-        CapsuleCollider col = rbMove.GetComponent<CapsuleCollider>();
-        Destroy(col);
+        CapsuleCollider[] col = rbMove.GetComponents<CapsuleCollider>();
+        foreach (var c in col)
+        {
+            Destroy(c);
+        }
+        
         Destroy(rbMove);
         isDead = true;
         axe.GetComponent<Rigidbody>().isKinematic = false;
@@ -72,8 +78,9 @@ public class Enemy : MonoBehaviour
 
     }
     void HitWood(GameObject target) {
-        rbMove.AddForce(new Vector3(0, 2f, 0), ForceMode.Impulse);
+        
         StartCoroutine(WaitAndReenable());
+        StartCoroutine(WaitJump());
         hasHit = true;
         anim.SetInteger("nAttack", Random.Range(0, 2));
         anim.SetTrigger("Attack");
@@ -85,6 +92,7 @@ public class Enemy : MonoBehaviour
         
         if (rbMove != null)
         {
+            /*
             int layerMask = 1 << 14;
             RaycastHit hit;
             if (Physics.Raycast(woodRay.transform.position, rbMove.transform.forward, out hit, 0.3f,layerMask))
@@ -100,7 +108,7 @@ public class Enemy : MonoBehaviour
                         WoodScript ws = hitColliders[i].GetComponent<WoodScript>();
                         if (ws != null && ws.tag == "wooden")
                         {
-                            ws.Damage(30f);
+                            ws.Damage(10f);
                         }
                         i++;
                     }
@@ -111,17 +119,62 @@ public class Enemy : MonoBehaviour
 
 
             }
+            else if (Physics.Raycast(woodRay1.transform.position, woodRay1.transform.forward, out hit, 0.3f, layerMask))
+            {
+                if (hit.collider.tag == "wooden" && hasHit == false)
+                {
 
+                    HitWood(hit.collider.gameObject);
+                    Collider[] hitColliders = Physics.OverlapSphere(woodRay.transform.position, 0.3f, layerMask);
+                    int i = 0;
+                    while (i < hitColliders.Length)
+                    {
+                        WoodScript ws = hitColliders[i].GetComponent<WoodScript>();
+                        if (ws != null && ws.tag == "wooden")
+                        {
+                            ws.Damage(10f);
+                        }
+                        i++;
+                    }
+
+
+                }
+
+
+
+            }
+            else if (Physics.Raycast(woodRay2.transform.position, woodRay2.transform.forward, out hit, 0.3f, layerMask))
+            {
+                if (hit.collider.tag == "wooden" && hasHit == false)
+                {
+
+                    HitWood(hit.collider.gameObject);
+                    Collider[] hitColliders = Physics.OverlapSphere(woodRay.transform.position, 0.3f, layerMask);
+                    int i = 0;
+                    while (i < hitColliders.Length)
+                    {
+                        WoodScript ws = hitColliders[i].GetComponent<WoodScript>();
+                        if (ws != null && ws.tag == "wooden")
+                        {
+                            ws.Damage(10f);
+                        }
+                        i++;
+                    }
+
+
+                }
+
+
+
+            }
+            */
             Vector3 movedDistance = rbMove.position - lastPos;
             
             anim.SetFloat("Speed", movedDistance.magnitude * 30f);
             
             if (movedDistance.magnitude * 30 < 0.2f && !hasJumped)
             {
-                hasJumped = true;
-                StartCoroutine(WaitJump());
-                anim.SetTrigger("Jump");
-                rbMove.AddForce(Vector3.up * 100f + (transform.forward * -10f) );
+                
             }
             lastPos = rbMove.position;
 
@@ -166,10 +219,33 @@ public class Enemy : MonoBehaviour
     }
     IEnumerator WaitJump()
     {
-
+        hasJumped = true;
         yield return new WaitForSeconds(Random.Range(2f,4f));
-        hasJumped = false;
-        
+        hasJumped = false;        
+        anim.SetTrigger("Jump");
+        rbMove.AddForce(Vector3.up * 100f + (transform.forward * -10f));
 
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "wooden" && hasHit == false)
+        {
+
+            HitWood(other.gameObject);
+            int layerMask = 1 << 14;
+            Collider[] hitColliders = Physics.OverlapSphere(woodRay.transform.position, 0.3f, layerMask);
+            int i = 0;
+            while (i < hitColliders.Length)
+            {
+                WoodScript ws = hitColliders[i].GetComponent<WoodScript>();
+                if (ws != null && ws.tag == "wooden")
+                {
+                    ws.Damage(10f);
+                }
+                i++;
+            }
+
+
+        }
     }
 }
