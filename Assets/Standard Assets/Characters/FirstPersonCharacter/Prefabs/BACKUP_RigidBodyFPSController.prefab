@@ -335,6 +335,10 @@ MonoBehaviour:
   whooshClip: {fileID: 8300000, guid: c817cbdce838f8f41b2cba21d8ca92ec, type: 3}
   groundClip: {fileID: 8300000, guid: 4c61851161caf4044b02cbf29dc3bbff, type: 3}
   blasterClip: {fileID: 8300000, guid: b553e22f803a2b046a416dd5388e9911, type: 3}
+  blasterDisplayONClip: {fileID: 8300000, guid: 0927b9114f15f483e8739d8a7333b464,
+    type: 3}
+  blasterDisplayOFFClip: {fileID: 8300000, guid: 096bd75dcdedb4c80856383da20f7475,
+    type: 3}
   impactEffect: {fileID: 0}
   range: 100
   damage: 1

@@ -58,6 +58,9 @@ public class PickUpObject : MonoBehaviour {
 
     public AudioClip blasterClip;
 
+    public AudioClip blasterDisplayONClip;
+    public AudioClip blasterDisplayOFFClip;
+
     public GameObject impactEffect;
     public float range = 100f;
     public float damage = 1f;
@@ -117,6 +120,16 @@ public class PickUpObject : MonoBehaviour {
         {
             gun.SetActive(!gun.active);
             gunHoloDisplay.SetActive(!gunHoloDisplay.active);
+
+            if (gunHoloDisplay.active) {
+                audiosource.clip = blasterDisplayONClip;
+                audiosource.Play(0);
+            }
+            if (!gunHoloDisplay.active)
+            {
+                audiosource.clip = blasterDisplayOFFClip;
+                audiosource.Play(0);
+            }
         }
 
 
