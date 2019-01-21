@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 7314670855741357184}
   - component: {fileID: 3618655846580209802}
   - component: {fileID: 1859655033859069027}
+  - component: {fileID: 5073754313823660835}
   m_Layer: 0
   m_Name: Testcoin
-  m_TagString: Untagged
+  m_TagString: coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,3 +110,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5073754313823660835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8193451045523588561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0baf1a52e553ed418b45708283bd82a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

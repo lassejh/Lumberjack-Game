@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public GameObject player;
     public GameObject woodRay;
     public GameObject woodRay1;
     public GameObject woodRay2;
@@ -15,6 +16,7 @@ public class Enemy : MonoBehaviour
     private bool isDead = false;
     private Vector3 lastPos;
     public GameObject axe;
+    public GameObject axePrefab;
     private bool hasHit = false;
     private AudioSource audioS;
     public AudioClip hitsWood;
@@ -31,6 +33,7 @@ public class Enemy : MonoBehaviour
 
 
     private bool canRetarget = true;
+    private bool canAttack = true;
 
     void SetKinematic(bool newValue)
     {
@@ -79,6 +82,12 @@ public class Enemy : MonoBehaviour
         if (canRetarget)
         {
             StartCoroutine(WaitAndReTarget());
+        }
+        Vector3 distanceToPlayerV = player.transform.position - transform.position;
+        if (distanceToPlayerV.magnitude < 2.5f && canAttack && !isDead)
+        {
+            
+            StartCoroutine(WaitAndThrow());
         }
     }
     void HitWood(GameObject target) {
@@ -192,7 +201,7 @@ public class Enemy : MonoBehaviour
             {
 
                 Vector3 direction = target.position - transform.position;
-                if (direction.magnitude > 1.5f)
+                if (direction.magnitude > 0f)
                 {
                     direction = direction.normalized;
 
@@ -242,5 +251,32 @@ public class Enemy : MonoBehaviour
         }
         canRetarget = true;
     }
-   
+    IEnumerator WaitAndThrow()
+    {
+        canAttack = false;
+        anim.SetTrigger("Throw");
+        
+        rbMove.velocity = Vector3.zero;
+        target = player.transform;
+        
+        
+        GameObject clone = Instantiate(axePrefab, woodRay.transform.position, transform.rotation) as GameObject;
+        clone.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+        clone.GetComponent<Rigidbody>().isKinematic = false;
+        clone.GetComponent<Rigidbody>().AddForce(player.transform.GetChild(0).position - transform.position * 20f);
+        
+        yield return new WaitForSeconds(5f);
+
+       
+        canAttack = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "coin")
+        {
+            Destroy(other.gameObject);
+        }
+    }
+
 }

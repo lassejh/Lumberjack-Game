@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class MachineScript : MonoBehaviour
 {
-    
+    public bool hasNotWon = true;
+    public GameObject player;
     public Transform[] gnomeSpawnPoints;
     public Transform[] coinSpawnPoints;
 
     public ObjectPooler objectPooler;
 
-    private bool canSpawnGnome = true;
-    private bool canSpawnCoin = true;
+    public bool canSpawnGnome = false;
+    public bool canSpawnCoin = false;
 
     public List<GameObject> gnomeTargets;
 
@@ -23,14 +24,18 @@ public class MachineScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (canSpawnGnome)
+        if (hasNotWon)
         {
-            StartCoroutine(WaitAndSpawn());
+            if (canSpawnGnome == true)
+            {
+                StartCoroutine(WaitAndSpawn());
+            }
+            if (canSpawnCoin == true)
+            {
+                StartCoroutine(WaitAndSpawnCoin());
+            }
         }
-        if (canSpawnCoin)
-        {
-            StartCoroutine(WaitAndSpawnCoin());
-        }
+        
     }
 
     IEnumerator WaitAndSpawn() {
@@ -41,6 +46,7 @@ public class MachineScript : MonoBehaviour
         Transform selectedSpawnPoint = gnomeSpawnPoints[Random.Range(0, gnomeSpawnPoints.Length)];
         GameObject p = objectPooler.SpawnFromPool("gnome", selectedSpawnPoint.position + new Vector3(2f, 0, 2f), Quaternion.identity);
         p.transform.GetChild(0).GetComponent<Enemy>().ms = this;
+        p.transform.GetChild(0).GetComponent<Enemy>().player = player;
         canSpawnGnome = true;
     }
     IEnumerator WaitAndSpawnCoin()
@@ -50,7 +56,7 @@ public class MachineScript : MonoBehaviour
         yield return new WaitForSeconds(3f);
         Transform selectedSpawnPoint = coinSpawnPoints[Random.Range(0, coinSpawnPoints.Length)];
         GameObject p = objectPooler.SpawnFromPool("coin", selectedSpawnPoint.position, Quaternion.identity);
-        p.GetComponent<Rigidbody>().AddForce(selectedSpawnPoint.forward * 10f);
+        p.GetComponent<Rigidbody>().AddForce(selectedSpawnPoint.forward * 20f);
         gnomeTargets.Add(p);
         canSpawnCoin = true;
     }

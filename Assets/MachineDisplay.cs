@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MachineDisplay : MonoBehaviour
 {
+    public Animator anim;
+    public Text counter;
+    public PickUpObject player;
     public GameObject mainBG;
     public GameObject secBG;
 
@@ -15,65 +19,120 @@ public class MachineDisplay : MonoBehaviour
     public GameObject display3;
     public GameObject display4;
     public GameObject display5;
+    public GameObject display6;
+    public GameObject display7;
 
-    private int currentPage = 0;
+    public bool hasWon = false;
+
+    public int currentPage = 0;
     // Start is called before the first frame update
 
 
     // Update is called once per frame
    public void UpdateDisplay()
     {
+        
         currentPage += 1;
-        if (currentPage == 5)
+        
+        if (currentPage >= 5)
         {
+            
             currentPage = 0;
         }
-        switch (currentPage)
+        if (hasWon)
         {
-            case 0:
-                display1.SetActive(true);
-                display2.SetActive(false);
-                display3.SetActive(false);
-                display4.SetActive(false);
-                display5.SetActive(false);
-                break;
+            switch (currentPage)
+            {
+                case 0:
+                    
+                    display1.SetActive(false);
+                    display2.SetActive(false);
+                    display3.SetActive(false);
+                    display4.SetActive(false);
+                    display5.SetActive(false);
+                    display6.SetActive(true);
+                    display7.SetActive(false);
+                    break;
 
-            case 1:
-                display1.SetActive(false);
-                display2.SetActive(true);
-                display3.SetActive(false);
-                display4.SetActive(false);
-                display5.SetActive(false);
-                break;
-            case 2:
-                display1.SetActive(false);
-                display2.SetActive(false);
-                display3.SetActive(true);
-                display4.SetActive(false);
-                display5.SetActive(false);
-                break;
-            case 3:
-                display1.SetActive(false);
-                display2.SetActive(false);
-                display3.SetActive(false);
-                display4.SetActive(true);
-                display5.SetActive(false);
-                break;
-            case 4:
-                display1.SetActive(false);
-                display2.SetActive(false);
-                display3.SetActive(false);
-                display4.SetActive(false);
-                display5.SetActive(true);
-                gun.SetActive(true);
-                gunTable.SetActive(false);
-                break;
+                case 1:
+                    display1.SetActive(false);
+                    display2.SetActive(false);
+                    display3.SetActive(false);
+                    display4.SetActive(false);
+                    display5.SetActive(false);
+                    display6.SetActive(false);
+                    display7.SetActive(true);
+                    gun.SetActive(false);
+                    
+                    break;
+                case 2:
+                    anim.SetTrigger("start");
+                    transform.gameObject.SetActive(false);
+                    break;
 
-                // and so on
+                    
+            }
         }
+        else
+        {
+            switch (currentPage)
+            {
+                case 0:
+                    display1.SetActive(true);
+                    display2.SetActive(false);
+                    display3.SetActive(false);
+                    display4.SetActive(false);
+                    display5.SetActive(false);
+                    display6.SetActive(false);
+                    display7.SetActive(false);
+                    break;
+
+                case 1:
+                    display1.SetActive(false);
+                    display2.SetActive(true);
+                    display3.SetActive(false);
+                    display4.SetActive(false);
+                    display5.SetActive(false);
+                    display6.SetActive(false);
+                    display7.SetActive(false);
+                    break;
+                case 2:
+                    display1.SetActive(false);
+                    display2.SetActive(false);
+                    display3.SetActive(true);
+                    display4.SetActive(false);
+                    display5.SetActive(false);
+                    display6.SetActive(false);
+                    display7.SetActive(false);
+                    break;
+                case 3:
+                    display1.SetActive(false);
+                    display2.SetActive(false);
+                    display3.SetActive(false);
+                    display4.SetActive(true);
+                    display5.SetActive(false);
+                    display6.SetActive(false);
+                    display7.SetActive(false);
+                    break;
+                case 4:
+                    display1.SetActive(false);
+                    display2.SetActive(false);
+                    display3.SetActive(false);
+                    display4.SetActive(false);
+                    display5.SetActive(true);
+                    display6.SetActive(false);
+                    display7.SetActive(false);
+                    gun.SetActive(true);
+                    gunTable.SetActive(false);
+                    player.timeStarted = true;
+                    counter.gameObject.SetActive(true);
+                    
+                    break;
+
+                    // and so on
+            }
+        }
+        
     }
-    private void Update()
-    {
-       // secBG.transform.position = new Vector3(mainBG.transform.position.x, mainBG.transform.position.y + Random.Range(-0.01f, 0.01f), mainBG.transform.position.z);
-    }
+    
 }

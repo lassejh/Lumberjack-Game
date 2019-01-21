@@ -7,7 +7,7 @@ public class treeRandomSizeScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        float rnd = Random.Range(0f, .5f);
+        float rnd = Random.Range(0f, 1.5f);
         transform.localScale += new Vector3(rnd, rnd, rnd);
         Destroy(this);
     }

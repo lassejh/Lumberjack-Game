@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class PickUpObject : MonoBehaviour {
 
+    private int hp = 100;
+    public int maxHealth = 100;
+
     public GameObject laserPrefab;
     public Transform bulletSpawnTarget;
     GameObject mainCamera;
@@ -23,6 +26,7 @@ public class PickUpObject : MonoBehaviour {
     private Vector3 lastPos;
 
     public int wood = 30;
+    private int coins = 0;
 
     public GameObject gun; // Display Panel text
     public GameObject gunHoloDisplay; // Holo background
@@ -67,8 +71,10 @@ public class PickUpObject : MonoBehaviour {
     public AudioClip blasterDisplayONClip;
     public AudioClip blasterDisplayOFFClip;
 
+    public AudioClip winMusic;
+
     public GameObject impactEffect;
-    public float range = 100f;
+    public float range = 7f;
     public float damage = 1f;
     public float impactForce = 30f;
 
@@ -76,17 +82,69 @@ public class PickUpObject : MonoBehaviour {
 
     public Text woodCounter;
 
+    public bool timeStarted;
+    private float timeLeft = 5f;
+
+    public MachineScript ms;
+    public MachineDisplay md;
+
+    public Text countdown;
+
+    private bool hasCounted = false;
+    private bool hasNotWon = true;
+
+
+    void UpdateText() { woodCounter.text = "Wood: " + wood + " Coins: " + coins + " HP: " + hp; }
 
     void Start () {
-        woodCounter.text = "Wood:" + wood;
+        UpdateText();
+
         mainCamera = GameObject.FindWithTag("MainCamera");
         objectPooler = ObjectPooler.Instance;
         carrying = false;
         torusRotation = Quaternion.Euler(90f, 0f, 0f);
         audiosource = GetComponent<AudioSource>();
 }
+    IEnumerator WaitAndResetCounter() {
+        yield return new WaitForSeconds(5f);
+        timeLeft = 5f;
+        timeStarted = true;
+    }
 	
 	void Update () {
+
+        if (timeStarted)
+        {
+            timeLeft -= Time.deltaTime;
+            countdown.text = "Time left till machine turns on: " + Mathf.Round(timeLeft) + "s"; 
+            if (timeLeft < 0)
+            {
+                if (!hasCounted)
+                {
+                    timeStarted = false;
+                    ms.canSpawnCoin = true;
+                    ms.canSpawnGnome = true;
+                    countdown.gameObject.SetActive(false);
+                    hasCounted = true;
+                    StartCoroutine(WaitAndResetCounter());
+                }
+                else if(hasCounted && hasNotWon)
+                {
+                    hasNotWon = false;
+                    ms.hasNotWon = false;
+               
+                    ms.canSpawnCoin = false;
+                    ms.canSpawnGnome = false;
+                    countdown.gameObject.SetActive(false);
+                    audiosource.clip = winMusic;
+                    audiosource.Play();
+                    md.hasWon = true;
+                    md.currentPage = 4;
+                    md.UpdateDisplay();
+                }
+                
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.Delete))
         {
@@ -216,7 +274,7 @@ public class PickUpObject : MonoBehaviour {
                     {
                         target.ChopTrunk(damage);
                         wood += 10;
-                        woodCounter.text = "Wood:" + wood;
+                        UpdateText();
 
 
                         if (hit.rigidbody != null)
@@ -244,7 +302,7 @@ public class PickUpObject : MonoBehaviour {
 
     void SpawnWoodObject(string type)
     {
-        woodCounter.text = "Wood:" + wood;
+        UpdateText();
         audiosource.clip = whooshClip;
         audiosource.Play(0);
         torusRotation = Quaternion.Euler(90f, 0f, 0f);
@@ -585,6 +643,7 @@ public class PickUpObject : MonoBehaviour {
             if (Physics.Raycast(ray, out hit)) {
                 Pickupable p = hit.collider.GetComponent<Pickupable>();
                 MachineDisplay md = hit.collider.GetComponent<MachineDisplay>();
+                CoinScript cs = hit.collider.GetComponent<CoinScript>();
                 if (p != null) {
                     audiosource.clip = whooshClip;
                     audiosource.Play(0);
@@ -614,6 +673,12 @@ public class PickUpObject : MonoBehaviour {
                 else if (md != null) {
 
                     md.UpdateDisplay();
+                }
+                else if (cs != null)
+                {
+                    hit.collider.gameObject.SetActive(false);
+                    coins += 1;
+                    UpdateText();
                 }
             }
         }
@@ -654,6 +719,23 @@ public class PickUpObject : MonoBehaviour {
 
         gun.GetComponent<GunDisplay>().UpdateDisplay();
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "axe")
+        {
+            Destroy(collision.gameObject);
+            Rigidbody rb = transform.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddForce(-transform.forward * 1f);
+                hp -= 1;
+                audiosource.clip = woodClips[0];
+                audiosource.Play();
+                UpdateText();
+            }
+        }
     }
 
 

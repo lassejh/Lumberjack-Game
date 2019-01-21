@@ -21,9 +21,27 @@ public class TreeTrunk : MonoBehaviour
 
     void Start()
     {
+
         rb = GetComponent<Rigidbody>();
         source = GetComponent<AudioSource>();
         crownMechanics.SetActive(false);
+
+        
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 2f))
+        {
+            if (hit.collider.tag == "ground")
+            {
+
+                transform.position = hit.point;
+
+
+            }
+
+
+
+        }
+
     }
 
     public void ChopTrunk(float damage)
@@ -54,6 +72,7 @@ public class TreeTrunk : MonoBehaviour
         crownMechanics.SetActive(true);
 
         source.PlayOneShot(treeTipping);
+        Destroy(transform.gameObject, 4f);
     }
 
     public void TouchingGround()
