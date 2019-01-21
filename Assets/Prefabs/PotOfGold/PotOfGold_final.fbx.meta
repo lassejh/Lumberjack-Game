@@ -1,0 +1,177 @@
+fileFormatVersion: 2
+guid: f2d0b1ccb2a0e459d92e03cc78919bc5
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: coin0
+    100002: coin0.001
+    100004: coin0.002
+    100006: coin0.003
+    100008: coin0.004
+    100010: coin0.005
+    100012: coin0.006
+    100014: pot
+    100016: pot_handle1
+    100018: pot_handle1.001
+    100020: pot_leg1
+    100022: pot_leg2
+    100024: pot_leg3
+    100026: pot_leg4
+    100028: //RootNode
+    400000: coin0
+    400002: coin0.001
+    400004: coin0.002
+    400006: coin0.003
+    400008: coin0.004
+    400010: coin0.005
+    400012: coin0.006
+    400014: pot
+    400016: pot_handle1
+    400018: pot_handle1.001
+    400020: pot_leg1
+    400022: pot_leg2
+    400024: pot_leg3
+    400026: pot_leg4
+    400028: //RootNode
+    2100000: Material
+    2100002: handle
+    2100004: leg1
+    2100006: leg1.001
+    2100008: leg1.002
+    2100010: leg1.003
+    2100012: coin.007
+    2100014: coin.008
+    2100016: coin.009
+    2100018: coin.010
+    2100020: coin.011
+    2100022: coin.012
+    2100024: coin.013
+    2100026: handle.002
+    2300000: coin0
+    2300002: coin0.001
+    2300004: coin0.002
+    2300006: coin0.003
+    2300008: coin0.004
+    2300010: coin0.005
+    2300012: coin0.006
+    2300014: pot
+    2300016: pot_handle1
+    2300018: pot_handle1.001
+    2300020: pot_leg1
+    2300022: pot_leg2
+    2300024: pot_leg3
+    2300026: pot_leg4
+    3300000: coin0
+    3300002: coin0.001
+    3300004: coin0.002
+    3300006: coin0.003
+    3300008: coin0.004
+    3300010: coin0.005
+    3300012: coin0.006
+    3300014: pot
+    3300016: pot_handle1
+    3300018: pot_handle1.001
+    3300020: pot_leg1
+    3300022: pot_leg2
+    3300024: pot_leg3
+    3300026: pot_leg4
+    4300000: pot
+    4300002: pot_handle1
+    4300004: pot_leg1
+    4300006: pot_leg4
+    4300008: pot_leg2
+    4300010: pot_leg3
+    4300012: coin0
+    4300014: coin0.001
+    4300016: coin0.002
+    4300018: coin0.003
+    4300020: coin0.004
+    4300022: coin0.005
+    4300024: coin0.006
+    4300026: pot_handle1.001
+  externalObjects: {}
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
