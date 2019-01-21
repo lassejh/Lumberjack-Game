@@ -83,7 +83,7 @@ public class PickUpObject : MonoBehaviour {
     public Text woodCounter;
 
     public bool timeStarted;
-    private float timeLeft = 5f;
+    private float timeLeft = 300f;
 
     public MachineScript ms;
     public MachineDisplay md;
@@ -107,7 +107,7 @@ public class PickUpObject : MonoBehaviour {
 }
     IEnumerator WaitAndResetCounter() {
         yield return new WaitForSeconds(5f);
-        timeLeft = 5f;
+        timeLeft = 200f;
         timeStarted = true;
     }
 	
