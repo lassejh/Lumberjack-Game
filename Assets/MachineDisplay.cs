@@ -7,6 +7,9 @@ public class MachineDisplay : MonoBehaviour
     public GameObject mainBG;
     public GameObject secBG;
 
+    public GameObject gun;
+    public GameObject gunTable;
+
     public GameObject display1;
     public GameObject display2;
     public GameObject display3;
@@ -62,6 +65,8 @@ public class MachineDisplay : MonoBehaviour
                 display3.SetActive(false);
                 display4.SetActive(false);
                 display5.SetActive(true);
+                gun.SetActive(true);
+                gunTable.SetActive(false);
                 break;
 
                 // and so on

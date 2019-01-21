@@ -111,7 +111,7 @@ public class WoodScript : MonoBehaviour {
     public void Damage(float dmg)
     {
         hp -= dmg;
-        Debug.Log("took damage" + transform.parent.gameObject);
+        
         if (hp <= 0f)
         {
             transform.position = new Vector3(0, -100f, 0);

@@ -12,6 +12,8 @@ public class GunDisplay : MonoBehaviour
     public GameObject panel3; // Carrying true
     public GameObject panelHolographic; // On the gun
 
+    public GameObject counterText;
+
     //public GameObject introMessage;
 
     public int DisplayPhase = 1;
@@ -42,5 +44,8 @@ public class GunDisplay : MonoBehaviour
             panel2.SetActive(true);
             panel3.SetActive(false);
         }
+    }
+    void UpdateCounter() {
+
     }
 }
