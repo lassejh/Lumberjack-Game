@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PickUpObject : MonoBehaviour {
 
@@ -20,6 +21,8 @@ public class PickUpObject : MonoBehaviour {
     private Vector3 force;
     private Vector3 trackVelocity;
     private Vector3 lastPos;
+
+    public int wood = 30;
 
     public GameObject gun; // Display Panel text
     public GameObject gunHoloDisplay; // Holo background
@@ -69,9 +72,13 @@ public class PickUpObject : MonoBehaviour {
     public float damage = 1f;
     public float impactForce = 30f;
 
+    private bool hasShot;
+
+    public Text woodCounter;
 
 
     void Start () {
+        woodCounter.text = "Wood:" + wood;
         mainCamera = GameObject.FindWithTag("MainCamera");
         objectPooler = ObjectPooler.Instance;
         carrying = false;
@@ -99,6 +106,7 @@ public class PickUpObject : MonoBehaviour {
             if (!carrying)
             {
                 SpawnWoodObject("pillar");
+                wood -= 10;
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -107,7 +115,7 @@ public class PickUpObject : MonoBehaviour {
             
             {
                 SpawnWoodObject("medium");
-
+                wood -= 3;
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -116,6 +124,7 @@ public class PickUpObject : MonoBehaviour {
 
             {
                 SpawnWoodObject("plank");
+                wood -= 1;
             }
         }
 
@@ -153,8 +162,9 @@ public class PickUpObject : MonoBehaviour {
 
                     gun.GetComponent<GunDisplay>().UpdateDisplay();
                 }
-                else 
+                else if(hasShot == false)
                 {
+                    StartCoroutine(WaitAndReenableGun());
                     audiosource.clip = blasterClip;
                     audiosource.Play(0);
 
@@ -198,13 +208,16 @@ public class PickUpObject : MonoBehaviour {
                 RaycastHit hit;
                 if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, range))
                 {
-                    Debug.Log(hit.transform.name);
+                    
 
                     TreeTrunk target = hit.transform.GetComponent<TreeTrunk>();
 
                     if (target != null)
                     {
                         target.ChopTrunk(damage);
+                        wood += 10;
+                        woodCounter.text = "Wood:" + wood;
+
 
                         if (hit.rigidbody != null)
                         {
@@ -220,8 +233,18 @@ public class PickUpObject : MonoBehaviour {
         
     }
 
+    IEnumerator WaitAndReenableGun()
+    {
+        hasShot = true;
+        yield return new WaitForSeconds(1f);
+        hasShot = false;
+        
+
+    }
+
     void SpawnWoodObject(string type)
     {
+        woodCounter.text = "Wood:" + wood;
         audiosource.clip = whooshClip;
         audiosource.Play(0);
         torusRotation = Quaternion.Euler(90f, 0f, 0f);

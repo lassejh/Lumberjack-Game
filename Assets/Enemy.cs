@@ -22,12 +22,15 @@ public class Enemy : MonoBehaviour
 
     private bool hasJumped;
 
-
+    public MachineScript ms;
 
 
     Animator anim;
 
     Rigidbody rbMove;
+
+
+    private bool canRetarget = true;
 
     void SetKinematic(bool newValue)
     {
@@ -39,6 +42,7 @@ public class Enemy : MonoBehaviour
     }
     void Start()
     {
+        target = ms.transform;
         anim = GetComponent<Animator>();
         audioS = GetComponent<AudioSource>();
         rbMove = moveObject.GetComponent<Rigidbody>();
@@ -55,13 +59,10 @@ public class Enemy : MonoBehaviour
     {
         SetKinematic(false);
         GetComponent<Animator>().enabled = false;
-        CapsuleCollider[] col = rbMove.GetComponents<CapsuleCollider>();
-        foreach (var c in col)
-        {
-            Destroy(c);
-        }
+        CapsuleCollider col = rbMove.GetComponent<CapsuleCollider>();
+        col.enabled = false;
         
-        Destroy(rbMove);
+        //Destroy(rbMove);
         isDead = true;
         axe.GetComponent<Rigidbody>().isKinematic = false;
         axe.transform.parent = null;
@@ -75,7 +76,10 @@ public class Enemy : MonoBehaviour
             isDead = !isDead;
         }
 
-
+        if (canRetarget)
+        {
+            StartCoroutine(WaitAndReTarget());
+        }
     }
     void HitWood(GameObject target) {
         
@@ -225,6 +229,18 @@ public class Enemy : MonoBehaviour
         anim.SetTrigger("Jump");
         rbMove.AddForce(Vector3.up * 100f + (transform.forward * -10f));
 
+    }
+
+    IEnumerator WaitAndReTarget() {
+        canRetarget = false;
+        yield return new WaitForSeconds(5f);
+
+        GameObject newtarget = ms.gnomeTargets[Random.Range(0, ms.gnomeTargets.Count-1)];
+        if (newtarget != null)
+        {
+            target = newtarget.transform;
+        }
+        canRetarget = true;
     }
    
 }
